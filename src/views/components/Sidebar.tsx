@@ -31,7 +31,7 @@ export default function SidebarComponent() {
 
   return (
     <div className="flex h-screen bg-white">
-      <Sidebar visible={sidebarOpen} onHide={() => setSidebarOpen(false)} className="p-sidebar-lg">
+      <Sidebar visible={sidebarOpen} onHide={() => setSidebarOpen(false)} className="p-sidebar-sm">
         <PanelMenu model={items} className="mt-8" />
       </Sidebar>
 
