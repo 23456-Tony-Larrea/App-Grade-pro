@@ -6,6 +6,7 @@ import { Checkbox } from 'primereact/checkbox';
 import { InputSwitch } from "primereact/inputswitch";
 import { PaginatorTemplate } from 'primereact/paginator';
 import { PrimeIcons } from "primereact/api";
+import { InputText } from 'primereact/inputtext';
 
 interface TableProps<T extends DataTableValue> {
   data: T[];
@@ -34,13 +35,13 @@ export default function GenericTable<T extends DataTableValue>({
   const [selectedItems, setSelectedItems] = useState<(T[keyof T])[]>([]);
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(rowsPerPage);
- 
+  const [searchTerm, setSearchTerm] = useState('');
+
   const toggleItemStatus = (itemId: T[keyof T]) => {
     setItems(items.map(item =>
       item[idField] === itemId ? { ...item, [activeField!]: !item[activeField!] } : item
     ));
   };
-
 
   const toggleItemSelection = (itemId: T[keyof T]) => {
     setSelectedItems(prevSelected =>
@@ -63,11 +64,26 @@ export default function GenericTable<T extends DataTableValue>({
     setRows(event.rows);
   };
 
+  const filteredItems = items.filter(item =>
+    columns.some(col => String(item[col.field]).toLowerCase().includes(searchTerm.toLowerCase()))
+  );
+
   return (
     <div>
-        
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
+        <span className="p-input-icon-left" style={{ width: '200px' }}>
+          <InputText
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Buscar..."
+            style={{ width: '80%' }}
+          />
+           <i className="pi pi-search" />
+         
+        </span>
+      </div>
       <DataTable
-        value={items}
+        value={filteredItems}
         paginator
         rows={rows}
         first={first}
@@ -98,30 +114,29 @@ export default function GenericTable<T extends DataTableValue>({
             )}
           />
         )}
-        
-      {(onEdit || onDelete) && (
-        <Column
-          header="Acciones"
-          body={(rowData: T) => (
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
-              {onEdit && (
-                <Button
-                  icon={PrimeIcons.PENCIL}
-                  onClick={() => onEdit(rowData)}
-                  className="p-button-rounded p-button-text"
-                />
-              )}
-              {onDelete && (
-                <Button
-                  icon={PrimeIcons.TRASH}
-                  onClick={() => onDelete(rowData[idField])}
-                  className="p-button-rounded p-button-danger p-button-text"
-                />
-              )}
-            </div>
-          )}
-        />
-      )}
+        {(onEdit || onDelete) && (
+          <Column
+            header="Acciones"
+            body={(rowData: T) => (
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                {onEdit && (
+                  <Button
+                    icon={PrimeIcons.PENCIL}
+                    onClick={() => onEdit(rowData)}
+                    className="p-button-rounded p-button-text"
+                  />
+                )}
+                {onDelete && (
+                  <Button
+                    icon={PrimeIcons.TRASH}
+                    onClick={() => onDelete(rowData[idField])}
+                    className="p-button-rounded p-button-danger p-button-text"
+                  />
+                )}
+              </div>
+            )}
+          />
+        )}
       </DataTable>
     </div>
   );

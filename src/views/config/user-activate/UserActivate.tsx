@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import ButtonModal from '../../components/ui/ButtonModal';
 import CustomModal from '../../components/ui/CustomModal';
-import GenericTable from './../../components/ui/Table'; // Ajusta la ruta según sea necesario
+import GenericTable from './../../components/ui/Table';
 import CustomTitle from '../../components/ui/Titles';
 import SidebarComponent from '../../components/Sidebar';
 
@@ -62,7 +62,7 @@ const UserTable = () => {
   return (
     <div>
         <SidebarComponent/>
-      <CustomTitle title="Gestion de Usuarios" />
+      <CustomTitle title="Gestion de Usuarios activos"/>
       <ButtonModal label="Agregar usuarios" onOpen={openModal} />
       <CustomModal 
                 visible={modalVisible} 
