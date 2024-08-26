@@ -27,7 +27,7 @@ ChartJS.register(
 );
 
 interface DashboardCalificacionesProps {
-  isDarkMode: boolean;
+  isDarkMode?: boolean;
 }
 
 export default function DashboardCalificaciones({
@@ -100,6 +100,9 @@ export default function DashboardCalificaciones({
         isDarkMode ? "bg-gray-900 text-white" : "bg-white text-black"
       }`}
     >
+       <h1 className="text-2xl font-bold mb-4">
+      Dashboard de Calificaciones
+    </h1>
       <div style={{ display: "flex", gap: "1em" }}>
         <Card
           className={`p-mb-4 ${

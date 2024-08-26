@@ -3,9 +3,9 @@ import { InputText } from "primereact/inputtext";
 import { Menubar } from "primereact/menubar";
 
 interface NavbarProps {
-  onMenuButtonClick: () => void;
-  onToggleDarkMode: () => void;
-  isDarkMode: boolean;
+  onMenuButtonClick?: () => void;
+  onToggleDarkMode?: () => void;
+  isDarkMode?: boolean;
 }
 
 export default function Navbar({

@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Sidebar } from "primereact/sidebar";
 import { PanelMenu } from "primereact/panelmenu";
 import Navbar from "./Navbar";
-import DashboardCalificaciones from "./Chart";
 
 export default function SidebarComponent() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -163,20 +162,6 @@ export default function SidebarComponent() {
           onToggleDarkMode={handleToggleDarkMode}
           isDarkMode={isDarkMode}
         />
-        <main
-          className={`flex-1 overflow-x-hidden overflow-y-auto ${
-            isDarkMode ? "bg-gray-800" : "bg-gray-100"
-          } p-6`}
-        >
-          <h1
-            className={`text-3xl font-semibold ${
-              isDarkMode ? "text-gray-200" : "text-gray-800"
-            }`}
-          >
-            Bienvenido al Sistema de Calificaciones
-          </h1>
-          <DashboardCalificaciones isDarkMode={isDarkMode} />
-        </main>
       </div>
     </div>
   );
