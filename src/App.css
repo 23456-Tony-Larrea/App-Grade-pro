@@ -1,0 +1,27 @@
+/* Define styles for light and dark modes */
+.light-mode {
+  background-color: white;
+  color: black;
+}
+
+.dark-mode {
+  background-color: black;
+  color: white;
+}
+
+/* Additional styles for dark mode */
+.dark-mode .p-menubar {
+  background-color: #333;
+  color: white;
+}
+
+.dark-mode .p-inputtext {
+  background-color: #555;
+  color: white;
+  border-color: #777;
+}
+
+.dark-mode .p-button {
+  background-color: #444;
+  color: white;
+}
