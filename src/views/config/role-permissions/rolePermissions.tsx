@@ -7,18 +7,10 @@ import { InputText } from "primereact/inputtext"
 import { PrimeIcons } from "primereact/api"
 import SidebarComponent from "../../components/Sidebar"
 import AddRoleDialog from "./AddRoleDialog"
+import { Role } from "../../../models/Role"
+import { Permission } from "../../../models/Permission"
 
-interface Permission {
-  id: number
-  name: string
-  enabled: boolean
-}
 
-interface Role {
-  id: number
-  name: string
-  permissions: Permission[]
-}
 
 // Datos de ejemplo
 const rolesAndPermissions: Role[] = [

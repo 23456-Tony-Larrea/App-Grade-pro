@@ -11,6 +11,10 @@ import UsersActivate from "./views/config/user-activate/UserActivate";
 
 import "./App.css";
 import RolePermissions from "./views/config/role-permissions/rolePermissions";
+import NewUsers from "./views/config/user-activate/NewUser";
+import EditUser from "./views/config/user-activate/EditUser";
+import UserInactivateTable from "./views/config/user-inactivate/UserInactivate";
+import CourseTable from "./views/academic-management/course/Course";
 
 const App: React.FC = () => {
   return (
@@ -21,6 +25,11 @@ const App: React.FC = () => {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/role-permission" element={<RolePermissions />} />
         <Route path="/user-activate" element={<UsersActivate />} />
+        <Route path="/edit-user/:id" element={<EditUser />} />
+        <Route path="/new-users" element={<NewUsers />} />
+        <Route path="/user-inactivate" element={<UserInactivateTable />} />
+        <Route path="/course" element={<CourseTable />} />
+        
 
       </Routes>
     </Router>

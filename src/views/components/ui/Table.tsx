@@ -7,6 +7,8 @@ import { InputSwitch } from "primereact/inputswitch";
 import { PaginatorTemplate } from 'primereact/paginator';
 import { PrimeIcons } from "primereact/api";
 import { InputText } from 'primereact/inputtext';
+import { Toast } from 'primereact/toast';
+import { useRef } from 'react';
 
 interface TableProps<T extends DataTableValue> {
   data: T[];
@@ -36,11 +38,14 @@ export default function GenericTable<T extends DataTableValue>({
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(rowsPerPage);
   const [searchTerm, setSearchTerm] = useState('');
+  const toast = useRef<Toast>(null);
 
   const toggleItemStatus = (itemId: T[keyof T]) => {
     setItems(items.map(item =>
       item[idField] === itemId ? { ...item, [activeField!]: !item[activeField!] } : item
     ));
+    const updatedItem = items.find(item => item[idField] === itemId);
+    toast.current?.show({ severity: 'info', summary: 'Estado cambiado', detail: `El estado de ${updatedItem?.name} ha sido cambiado.` });
   };
 
   const toggleItemSelection = (itemId: T[keyof T]) => {
@@ -70,6 +75,7 @@ export default function GenericTable<T extends DataTableValue>({
 
   return (
     <div>
+      <Toast ref={toast} />
       <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
         <span className="p-input-icon-left" style={{ width: '200px' }}>
           <InputText

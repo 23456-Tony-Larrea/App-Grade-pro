@@ -1,5 +1,6 @@
-export interface Users {
-    id_user?: string;
-    username: string;
-    password: string;
-}
+export interface User {
+    id: number;
+    name: string;
+    email: string;
+    active: boolean;
+  }
