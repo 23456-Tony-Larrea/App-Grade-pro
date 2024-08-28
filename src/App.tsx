@@ -3,7 +3,6 @@ import {
   BrowserRouter as Router,
   Route,
   Routes,
-  Navigate,
 } from "react-router-dom";
 import Login from "./views/home/LoginForm";
 import Dashboard from "./views/home/Dashboard";
@@ -15,12 +14,13 @@ import NewUsers from "./views/config/user-activate/NewUser";
 import EditUser from "./views/config/user-activate/EditUser";
 import UserInactivateTable from "./views/config/user-inactivate/UserInactivate";
 import CourseTable from "./views/academic-management/course/Course";
+import Home from "./views/components/Home";
 
 const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/" element={<Home/> } />
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/role-permission" element={<RolePermissions />} />
