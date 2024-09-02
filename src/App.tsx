@@ -15,6 +15,7 @@ import EditUser from "./views/config/user-activate/EditUser";
 import UserInactivateTable from "./views/config/user-inactivate/UserInactivate";
 import CourseTable from "./views/academic-management/course/Course";
 import Home from "./views/components/Home";
+import SubjectTable from "./views/academic-management/subjects/subjects";
 
 const App: React.FC = () => {
   return (
@@ -29,8 +30,7 @@ const App: React.FC = () => {
         <Route path="/new-users" element={<NewUsers />} />
         <Route path="/user-inactivate" element={<UserInactivateTable />} />
         <Route path="/course" element={<CourseTable />} />
-        
-
+        <Route path="/subject" element={<SubjectTable />} />
       </Routes>
     </Router>
   );
