@@ -7,7 +7,6 @@ import {
 import Login from "./views/home/LoginForm";
 import Dashboard from "./views/home/Dashboard";
 import UsersActivate from "./views/config/user-activate/UserActivate";
-
 import "./App.css";
 import RolePermissions from "./views/config/role-permissions/rolePermissions";
 import NewUsers from "./views/config/user-activate/NewUser";
@@ -16,6 +15,15 @@ import UserInactivateTable from "./views/config/user-inactivate/UserInactivate";
 import CourseTable from "./views/academic-management/course/Course";
 import Home from "./views/components/Home";
 import SubjectTable from "./views/academic-management/subjects/subjects";
+import GradeOne from "./views/admin-qualifications/contribution-1/ContributionOne";
+import GradeTwo from "./views/admin-qualifications/contribution-2/ContributionTwo";
+import GradeThree from "./views/admin-qualifications/contribution-3/ContributionThree";
+import Exam from "./views/admin-qualifications/final-exam/ContributionThree";
+import StudentTable from "./views/academic-management/students/TableStudent";
+import FormStudent from "./views/academic-management/students/FormStudent";
+import FormTeacher from "./views/academic-management/Teacher/FormTeacher";
+import TeacherTable from "./views/academic-management/Teacher/TableTeacher";
+import TotalAttendance from "./views/attendance management/total-attendance/totalAttendance";
 
 const App: React.FC = () => {
   return (
@@ -31,7 +39,20 @@ const App: React.FC = () => {
         <Route path="/user-inactivate" element={<UserInactivateTable />} />
         <Route path="/course" element={<CourseTable />} />
         <Route path="/subject" element={<SubjectTable />} />
-      </Routes>
+        <Route path="/grade-one" element={<GradeOne />} />
+        <Route path="/grade-two" element={<GradeTwo />} />
+        <Route path="/grade-three" element={<GradeThree />} />
+        <Route path="/exam" element={<Exam />} />
+        <Route path="/students" element={<StudentTable />} />
+        <Route path="/new-students" element={<FormStudent mode="insert" />} />
+        <Route path="/edit-student/:id" element={<FormStudent mode="edit" />} />
+        <Route path="/teacher" element={<TeacherTable />} />
+        <Route path="/new-teacher" element={<FormTeacher mode="insert" />} />
+        <Route path="/edit-teacher/:id" element={<FormTeacher mode="edit" />} />
+        <Route path="/total-attendece" element={<TotalAttendance />} />
+
+
+        </Routes>
     </Router>
   );
 };

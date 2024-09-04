@@ -10,9 +10,9 @@ import CustomModal from '../../components/ui/CustomModal';
 
 
 const SubjectData: Subject[] = [
-  { id: 1, name: 'A', state: true },
-  { id: 2, name: 'B', state: false },
-  { id: 3, name: 'C', state: true },
+  { id: 1, name: 'Quimica', state: true },
+  { id: 2, name: 'fisica', state: false },
+  { id: 3, name: 'Cultura fisica', state: true },
 ];
 
 const columns: { field: keyof Subject, header: string }[] = [
