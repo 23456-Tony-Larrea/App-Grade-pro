@@ -45,6 +45,8 @@ model User {
   age           Int
   email         String  @unique
   password      String
+  token         String?
+  token_type    String?
   roleId        Int     @unique
   role          Role    @relation(fields: [roleId], references: [id])
 }
