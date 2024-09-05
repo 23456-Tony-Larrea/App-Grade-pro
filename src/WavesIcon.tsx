@@ -14,7 +14,7 @@ export function WavesIcon(props: React.SVGProps<SVGSVGElement>) {
         className="text-white"
       >
         <image
-          href="../src/public/assets/PIE-DE-FIRMA-PARA-WEB.png"
+          href="../src/public/assets/edu.png"
           x="0"
           y="0"
           height="24"

@@ -89,6 +89,11 @@ export default function Component() {
               <label htmlFor="password">Contraseña</label>
             </span>
           </div>
+          <div style={{ marginBottom: "20px", textAlign: "right" }}>
+            <a href="#" style={{ color: "var(--primary-color)", textDecoration: "underline" }}>
+              ¿Olvidaste tu contraseña?
+            </a>
+          </div>
           {loading ? (
             <div
               style={{
@@ -106,6 +111,7 @@ export default function Component() {
               onClick={handleLogin}
             />
           )}
+          
         </div>
       </Card>
     </div>

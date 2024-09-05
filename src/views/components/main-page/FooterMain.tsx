@@ -9,7 +9,7 @@ export default function FooterMain() {
     <footer className="p-d-flex p-flex-column p-ai-center p-p-4" style={{ backgroundColor: '#007ad9', color: 'white' }}>
       <div className="p-d-flex p-jc-between p-ai-center p-w-full p-mb-3">
         <div>
-          <h3 className="p-mb-1">EduManage</h3>
+          <h3 className="p-mb-1">GradePro</h3>
           <p className="p-mt-0">Empoderando la Educación en Todas Partes</p>
         </div>
         <div className="p-d-flex">
@@ -42,7 +42,7 @@ export default function FooterMain() {
       </div>
       <Divider />
       <div className="p-d-flex p-jc-between p-ai-center p-w-full">
-        <p>&copy; {new Date().getFullYear()} EduManage. Todos los derechos reservados.</p>
+        <p>&copy; {new Date().getFullYear()} GradePro. Todos los derechos reservados.</p>
         <p>
           <Link to="#" className="p-mr-3" style={{ color: 'white', textDecoration: 'none' }}>Términos de Servicio</Link>
           <Link to="#" style={{ color: 'white', textDecoration: 'none' }}>Política de Privacidad</Link>

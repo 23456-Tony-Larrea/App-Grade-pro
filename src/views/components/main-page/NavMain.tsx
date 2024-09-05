@@ -15,7 +15,7 @@ export default function NavMain() {
     <header className={styles.header}>
       <div className={styles.headerLink}>
         <i className={`${PrimeIcons.BOOK} ${styles.headerLinkIcon}`} />
-        <span className={styles.headerTitle}>EduManage</span>
+        <span className={styles.headerTitle}>GradePro</span>
       </div>
       <Menubar model={items} className={styles.nav} />
     </header>
