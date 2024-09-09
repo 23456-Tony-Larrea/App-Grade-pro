@@ -49,4 +49,6 @@ model User {
   token_type    String?
   roleId        Int     @unique
   role          Role    @relation(fields: [roleId], references: [id])
+  state         Boolean @default(true)
+  failed_login_attempts Int @default(0)
 }
