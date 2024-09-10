@@ -93,7 +93,7 @@ export class LoginRegisterService {
     return {
       token,
       tokenType: 'Bearer',
-      message: 'User created successfully',
+      message: 'Ususario creado con exito',
     };
   }
   
@@ -101,7 +101,11 @@ export class LoginRegisterService {
     const { identity, password } = data;
   
     if (!identity) {
-      throw new BadRequestException('Identity is required.');
+      throw new BadRequestException('Cédula es requerida.');
+    }
+    
+    if (!password) {
+      throw new BadRequestException('Contraseña es requerida.');
     }
   
     const user = await this.prisma.user.findUnique({
@@ -109,7 +113,7 @@ export class LoginRegisterService {
     });
   
     if (!user) {
-      throw new NotFoundException('User not found.');
+      throw new NotFoundException('Usuario no encontrado.');
     }
   
     if (!user.state) {
