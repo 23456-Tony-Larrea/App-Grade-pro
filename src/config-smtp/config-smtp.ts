@@ -3,9 +3,7 @@ import * as dotenv from 'dotenv';
 import * as path from 'path';
 import * as nodemailer from 'nodemailer';
 
-// Configurar dotenv
 dotenv.config({ path: path.join(__dirname, '../.env') });
-
 @Injectable()
 export class ConfigSmtp {
    static transporter = nodemailer.createTransport({

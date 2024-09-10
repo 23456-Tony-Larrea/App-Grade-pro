@@ -3,28 +3,54 @@ import { Injectable ,ConflictException, NotFoundException, UnauthorizedException
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import { PrismaService } from '../../../prisma/prisma.service';
-import { RegisterUserDTO } from 'src/DTO/auth/auth';
+import { RegisterUserDTO } from 'src/DTO/auth/authDTO';
 import { DesactivateUsersService } from './desactivate-users/desactivate-users.service';
+import { WelcomeUserService } from './welcome-user/welcome-user.service';
 import * as moment from 'moment';
+import { DesactivateUserFalseService } from './desactivate-user-false/desactivate-user-false.service';
 
 @Injectable()
 export class LoginRegisterService {
-  constructor(private prisma: PrismaService ,private readonly emailService: DesactivateUsersService) {}
+  constructor(private prisma: PrismaService ,private readonly emailService: DesactivateUsersService,private readonly welcomeUser:WelcomeUserService, private readonly emailStateFalse:DesactivateUserFalseService) {}
   
   async register(data: RegisterUserDTO) {
-    const existingUser = await this.prisma.user.findUnique({
+    const existingUserByEmail = await this.prisma.user.findUnique({
       where: {
         email: data.email,
       },
     });
 
-    if (existingUser) {
+    if (existingUserByEmail) {
       throw new ConflictException('El correo electrónico ya está registrado.');
     }
 
-    const hashedPassword = await bcrypt.hash(data.password, 10);
+    const existingUserByIdentity = await this.prisma.user.findUnique({
+      where: {
+        identity: data.identity,
+      },
+    });
 
-    // Asegurarse de que la fecha esté en formato ISO-8601
+    if (existingUserByIdentity) {
+      throw new ConflictException('La identidad ya está registrada.');
+    }
+
+    const existingUserByPhone = await this.prisma.user.findUnique({
+      where: {
+        phone: data.phone,
+      },
+    });
+
+    if (existingUserByPhone) {
+      throw new ConflictException('El teléfono ya está registrado.');
+    }
+
+    // Generate a random password
+    const randomPassword = Math.floor(Math.random() * 90000) + 10000;
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(randomPassword.toString(), 10);
+
+    // Ensure the date of birth is in ISO-8601 format
     const formattedDateOfBirth = moment(data.dateOfBirth).toISOString();
 
     const newUser = await this.prisma.user.create({
@@ -45,7 +71,30 @@ export class LoginRegisterService {
       },
     });
 
-    return newUser;
+    const token = jwt.sign(
+      { id: newUser.id, name: newUser.name, roleId: newUser.roleId, identity: newUser.identity },
+      'secretkey', // Pass the secret as a string
+      { expiresIn: '24h' },
+    );
+
+    await this.prisma.user.update({
+      where: { id: newUser.id },
+      data: {
+        token,
+        token_type: 'Bearer',
+      },
+    });
+
+    if (data.roleId !== 3) {
+      const htmlContent = this.welcomeUser.accountCreateHTML(newUser.name, randomPassword);
+      await this.emailService.sendEmail(newUser.email, 'Bienvenido a GradePro', htmlContent);
+    }
+
+    return {
+      token,
+      tokenType: 'Bearer',
+      message: 'User created successfully',
+    };
   }
   
   async login(data: RegisterUserDTO) {
@@ -64,7 +113,7 @@ export class LoginRegisterService {
     }
   
     if (!user.state) {
-      const htmlContent = this.emailService.accountDeactivatedHTML(user.name, user.email);
+      const htmlContent = this.emailStateFalse.emailDesactivate(user.name, user.email);
       await this.emailService.sendEmail(user.email, 'Cuenta desactivada', htmlContent);
       throw new UnauthorizedException('Tu cuenta está desactivada. Por favor, contáctate con el administrador.');
     }
@@ -76,7 +125,7 @@ export class LoginRegisterService {
       });
       const htmlContent = this.emailService.accountDeactivatedHTML(user.name, user.email);
       await this.emailService.sendEmail(user.email, 'Cuenta desactivada', htmlContent);
-      throw new UnauthorizedException('Tu cuenta ha sido desactivada. Se ha enviado un correo electrónico para restablecerla.');
+      throw new UnauthorizedException('Tu cuenta ha sido desactivada. por intentos fallidos.');
     }
   
     const passwordIsValid = await bcrypt.compare(password, user.password);

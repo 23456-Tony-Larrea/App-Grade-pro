@@ -28,7 +28,7 @@ model Role {
   id          Int     @id @default(autoincrement())
   name        String
   permissions PermissionRole[]
-  user        User?
+  users       User[]
 }
 
 model User {
@@ -47,8 +47,8 @@ model User {
   password      String
   token         String?
   token_type    String?
-  roleId        Int     @unique
-  role          Role    @relation(fields: [roleId], references: [id])
+  role Role? @relation(fields: [roleId], references: [id])
+  roleId Int?
   state         Boolean @default(true)
   failed_login_attempts Int @default(0)
 }
