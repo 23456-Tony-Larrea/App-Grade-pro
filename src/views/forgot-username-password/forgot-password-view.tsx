@@ -20,7 +20,7 @@ const ForgotPassword: React.FC = () => {
   };
 
   return (
-    <Dialog header="RECUPERAR CONTRASEÑA" visible={dialog} onHide={cancel} style={{ width: '50vw' }}>
+    <Dialog header="Recuperar contraseña" visible={dialog} onHide={cancel} style={{ width: '50vw' }}>
       <div className="p-fluid">
         <div className="p-grid p-justify-center">
           <div className="p-col-12 p-sm-8 p-md-6">

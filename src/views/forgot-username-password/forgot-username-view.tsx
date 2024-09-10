@@ -22,13 +22,13 @@ const ForgotUsername: React.FC = () => {
 
   return (
     <div>
-      <Dialog visible={dialog} onHide={cancel} style={{ width: '50vw' }} modal closeOnEscape={false}>
+      <Dialog header="Olvidó su usuario" visible={dialog} onHide={cancel} style={{ width: '50vw' }} modal closeOnEscape={false}>
       <Card title={<><i className="pi pi-user" style={{ marginRight: '0.5rem' }}></i>Olvidó el nombre de su usuario</>} subTitle="">
   <div className="p-fluid">
     <div className="p-field">
       <span className="p-float-label">
         <InputText id="identity" value={identity} onChange={(e) => setIdentity(e.target.value)} />
-        <label htmlFor="identity">Ingresa tu cedula</label>
+        <label htmlFor="identity">Ingresa tu cédula</label>
       </span>
     </div>
     <div className="p-field">
