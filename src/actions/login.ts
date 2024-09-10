@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { API_URL } from '../public/urls/URL\'S';
-import { Users } from '../models/User';
+import { User } from '../models/User';
 
-export type LoginUserParams = Omit<Users, 'id_user'>;
+export type LoginUserParams = Omit<User, 'id_user'>;
 
-export const login = async (data: LoginUserParams): Promise<Users> => {
-  const response = await axios.post(`${API_URL}/login`, data);
+export const login = async (data: LoginUserParams): Promise<User> => {
+  const response = await axios.post(`${API_URL}/auth/login`, data);
   return response.data;
 };

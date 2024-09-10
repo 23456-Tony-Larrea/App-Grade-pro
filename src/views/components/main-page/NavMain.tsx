@@ -1,13 +1,18 @@
 import { PrimeIcons } from "primereact/api";
 import { Menubar } from 'primereact/menubar';
 import styles from '../../../public/assets/mainPage.module.css';
+import { useNavigate } from "react-router-dom";
 
 export default function NavMain() {
+  // Simulación de la navegación con React Router DOM
+  const navigate = useNavigate();
   const items = [
     {
       label: 'Iniciar',
       icon: PrimeIcons.SIGN_IN,
-      command: () => { /* Acción al hacer clic en Iniciar */ }
+      command: () => { 
+        navigate('/login');
+       }
     }
   ];
 

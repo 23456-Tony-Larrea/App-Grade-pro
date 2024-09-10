@@ -24,6 +24,9 @@ import FormStudent from "./views/academic-management/students/FormStudent";
 import FormTeacher from "./views/academic-management/Teacher/FormTeacher";
 import TeacherTable from "./views/academic-management/Teacher/TableTeacher";
 import TotalAttendance from "./views/attendance management/total-attendance/totalAttendance";
+import ForgotDialog from "./views/home/ForgotDialog";
+import ForgotUsername from "./views/forgot-username-password/forgot-username-view";
+import ForgotPassword from "./views/forgot-username-password/forgot-password-view";
 
 const App: React.FC = () => {
   return (
@@ -50,7 +53,9 @@ const App: React.FC = () => {
         <Route path="/new-teacher" element={<FormTeacher mode="insert" />} />
         <Route path="/edit-teacher/:id" element={<FormTeacher mode="edit" />} />
         <Route path="/total-attendece" element={<TotalAttendance />} />
-
+        <Route path="/modal-username-password" element={<ForgotDialog />} />
+        <Route path="/forgot-username" element={<ForgotUsername />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
 
         </Routes>
     </Router>
