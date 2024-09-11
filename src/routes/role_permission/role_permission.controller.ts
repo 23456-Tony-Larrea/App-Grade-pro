@@ -11,11 +11,15 @@ export class RolesPermissionController {
         return this.rolesPermissionService.findWithJoin(roleId);
     }
     @Put(':roleId/:permissionId')
-    async updateState(@Param('roleId') roleId: string, @Param('permissionId') permissionId: string, @Body() body: any) {
-        const roleIdInt = parseInt(roleId);
-        const permissionIdInt = parseInt(permissionId);
-        const newState = body.state;
-        return this.rolesPermissionService.updateState(roleIdInt, permissionIdInt, newState);
+    async updateState(
+      @Param('roleId') roleId: string,
+      @Param('permissionId') permissionId: string,
+      @Body() body: { state: boolean }
+    ) {
+      const roleIdInt = parseInt(roleId);
+      const permissionIdInt = parseInt(permissionId);
+      const newState = body.state;
+      return this.rolesPermissionService.updateState(roleIdInt, permissionIdInt, newState);
     }
 
 }

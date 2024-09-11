@@ -25,11 +25,12 @@ export class RolesService {
             });
         }
         await this.prismaService.permissionRole.createMany({ data: rolePermissions });
-        return { message: 'Role created successfully' };
+        return { message: 'Rol creado con exito' };
     }
     
     async update(id: number, data: any) {
-        await this.prismaService.role.update({ where: { id }, data });
+        const roleId = Number(id);
+        await this.prismaService.role.update({ where: { id: roleId }, data });
         return { message: 'Role updated successfully' };
     }
     

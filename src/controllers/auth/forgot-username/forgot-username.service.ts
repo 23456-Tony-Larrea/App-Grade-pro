@@ -56,8 +56,7 @@ export class ForgotUsernameService {
               console.log('Message sent: %s', info.messageId);
               return { message: 'Se envió un mensaje a tu correo electrónico' };              
             } catch (error) {
-              console.error(error);
-              throw new InternalServerErrorException('Ocurrió un error al enviar el correo electrónico');
+              throw new InternalServerErrorException(error.message);
             }
     }
 }

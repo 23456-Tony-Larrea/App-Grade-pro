@@ -34,6 +34,6 @@ export class RolesPermissionService {
                 state: newState,
             },
         });
-        return { message: 'Role permission updated successfully' };
+        return { message: 'El permiso del rol ha sido actualizado con exito' };
     }
 }
