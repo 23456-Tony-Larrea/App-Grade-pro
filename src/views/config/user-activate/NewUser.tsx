@@ -9,7 +9,6 @@ import { validationSchema } from "../../../validations/ValidationsSchema";
 import { User } from "../../../models/User";
 import { UserInitialValues } from "../../../class/UserRegister";
 /* import { Dropdown } from "primereact/dropdown"; */
-// Clase para generar valores iniciales basados en la interfaz User
 
 export default function NewUsers() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -33,12 +32,11 @@ export default function NewUsers() {
     { label: "Información General" },
     { label: "Ingreso del Alumnado" },
   ];
-  const genders=[
-      {name: 'Masculino', value: 'M'},
-      {name: 'Femenino', value: 'F'},
-      {name: 'Otro', value: 'O'},
-
-  ]
+  const genders = [
+    { name: "Masculino", value: "M" },
+    { name: "Femenino", value: "F" },
+    { name: "Otro", value: "O" },
+  ];
 
   return (
     <div className="card">
@@ -65,7 +63,9 @@ export default function NewUsers() {
                   onBlur={formik.handleBlur}
                 />
                 {formik.touched.identity && formik.errors.identity ? (
-                  <div style={{ color: 'red' }}>{formik.errors.identity as string}</div>
+                  <div style={{ color: "red" }}>
+                    {formik.errors.identity as string}
+                  </div>
                 ) : null}
               </div>
               <div className="field">
@@ -80,7 +80,9 @@ export default function NewUsers() {
                   onBlur={formik.handleBlur}
                 />
                 {formik.touched.name && formik.errors.name ? (
-                  <div style={{ color: 'red' }}>{formik.errors.name as string}</div>
+                  <div style={{ color: "red" }}>
+                    {formik.errors.name as string}
+                  </div>
                 ) : null}
               </div>
               <div className="field">
@@ -95,7 +97,9 @@ export default function NewUsers() {
                   onBlur={formik.handleBlur}
                 />
                 {formik.touched.secondName && formik.errors.secondName ? (
-                  <div style={{ color: 'red' }}>{formik.errors.secondName as string}</div>
+                  <div style={{ color: "red" }}>
+                    {formik.errors.secondName as string}
+                  </div>
                 ) : null}
               </div>
               <div className="field">
@@ -110,7 +114,9 @@ export default function NewUsers() {
                   onBlur={formik.handleBlur}
                 />
                 {formik.touched.firstLastName && formik.errors.firstLastName ? (
-                  <div style={{ color: 'red' }}>{formik.errors.firstLastName as string}</div>
+                  <div style={{ color: "red" }}>
+                    {formik.errors.firstLastName as string}
+                  </div>
                 ) : null}
               </div>
               <div className="field">
@@ -124,13 +130,16 @@ export default function NewUsers() {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
-                {formik.touched.secondLastName && formik.errors.secondLastName ? (
-                  <div style={{ color: 'red' }}>{formik.errors.secondLastName as string}</div>
+                {formik.touched.secondLastName &&
+                formik.errors.secondLastName ? (
+                  <div style={{ color: "red" }}>
+                    {formik.errors.secondLastName as string}
+                  </div>
                 ) : null}
               </div>
             </div>
           )}
-{activeIndex === 1 && (
+          {activeIndex === 1 && (
             <div className="p-fluid">
               <div className="field">
                 <label htmlFor="email" className="font-bold">
@@ -145,7 +154,9 @@ export default function NewUsers() {
                   onBlur={formik.handleBlur}
                 />
                 {formik.touched.email && formik.errors.email ? (
-                  <div style={{ color: 'red' }}>{formik.errors.email as string}</div>
+                  <div style={{ color: "red" }}>
+                    {formik.errors.email as string}
+                  </div>
                 ) : null}
               </div>
               <div className="field">
@@ -161,7 +172,9 @@ export default function NewUsers() {
                   onBlur={formik.handleBlur}
                 />
                 {formik.touched.dateOfBirth && formik.errors.dateOfBirth ? (
-                  <div style={{ color: 'red' }}>{formik.errors.dateOfBirth as string}</div>
+                  <div style={{ color: "red" }}>
+                    {formik.errors.dateOfBirth as string}
+                  </div>
                 ) : null}
               </div>
               <div className="field">
@@ -176,11 +189,13 @@ export default function NewUsers() {
                   optionLabel="name"
                   placeholder="Selecciona un género"
                 />
-                {formik.touched.gender && formik.errors.gender? (
-                  <div style={{ color:'red' }}>{formik.errors.gender as string}</div>
+                {formik.touched.gender && formik.errors.gender ? (
+                  <div style={{ color: "red" }}>
+                    {formik.errors.gender as string}
+                  </div>
                 ) : null}
-                 </div>
-                 <div className="field">
+              </div>
+              <div className="field">
                 <label htmlFor="phone" className="font-bold">
                   Teléfono
                 </label>
@@ -193,10 +208,12 @@ export default function NewUsers() {
                   onBlur={formik.handleBlur}
                 />
                 {formik.touched.phone && formik.errors.phone ? (
-                  <div style={{ color:'red' }}>{formik.errors.phone as string}</div>
+                  <div style={{ color: "red" }}>
+                    {formik.errors.phone as string}
+                  </div>
                 ) : null}
-                 </div>
-                 <div className="field">
+              </div>
+              <div className="field">
                 <label htmlFor="address" className="font-bold">
                   Dirección
                 </label>
@@ -208,30 +225,34 @@ export default function NewUsers() {
                   onBlur={formik.handleBlur}
                 />
                 {formik.touched.address && formik.errors.address ? (
-                  <div style={{ color:'red' }}>{formik.errors.address as string}</div>
-                ) : null}
+                  <div style={{ color: "red" }}>
+                    {formik.errors.address as string}
                   </div>
-                  <div className="field">
-  <label htmlFor="age" className="font-bold">
-    Edad
-  </label>
-  <InputText
-    id="age"
-    name="age"
-    type="number"
-    value={String(formik.values.age)}
-    onChange={formik.handleChange}
-    onBlur={formik.handleBlur}
-  />
-  {formik.touched.age && formik.errors.age ? (
-    <div style={{ color: 'red' }}>{formik.errors.age as string}</div>
-  ) : null}
-</div>
+                ) : null}
+              </div>
+              <div className="field">
+                <label htmlFor="age" className="font-bold">
+                  Edad
+                </label>
+                <InputText
+                  id="age"
+                  name="age"
+                  type="number"
+                  value={String(formik.values.age)}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched.age && formik.errors.age ? (
+                  <div style={{ color: "red" }}>
+                    {formik.errors.age as string}
+                  </div>
+                ) : null}
+              </div>
             </div>
           )}
           {activeIndex === 2 && (
             <div className="p-fluid">
-           <div className="field">
+              <div className="field">
                 <label htmlFor="roles" className="font-bold">
                   Roles
                 </label>
@@ -244,7 +265,9 @@ export default function NewUsers() {
                   placeholder="Selecciona un rol"
                 />
                 {formik.touched.roleId && formik.errors.roleId ? (
-                  <div style={{ color: 'red' }}>{formik.errors.roleId as string}</div>
+                  <div style={{ color: "red" }}>
+                    {formik.errors.roleId as string}
+                  </div>
                 ) : null}
               </div>
               {/* <div className="field">
@@ -263,7 +286,7 @@ export default function NewUsers() {
                   <div style={{ color: 'red' }}>{formik.errors.cursos as string}</div>
                 ) : null}
               </div> */}
-             {/*  <div className="field">
+              {/*  <div className="field">
                 <label htmlFor="tutor" className="font-bold">
                   Tutor
                 </label>
@@ -277,13 +300,9 @@ export default function NewUsers() {
                 {formik.touched.tutor && formik.errors.tutor ? (
                   <div style={{ color: 'red' }}>{formik.errors.tutor as string}</div>
                 ) : null}
-              </div> */} 
+              </div> */}
               <div className="flex justify-content-between">
-                <Button
-                  label="Enviar"
-                  icon="pi pi-check"
-                  type="submit"
-                />
+                <Button label="Enviar" icon="pi pi-check" type="submit" />
               </div>
             </div>
           )}
