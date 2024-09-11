@@ -24,7 +24,7 @@ const columns: { field: keyof User; header: string }[] = [
   { field: "email", header: "Email" },
 ];
 
-const UserTable = () => {
+const UserActive = () => {
   const navigate = useNavigate();
   const [users, setUsers] = useState(usersData);
   const [visible, setVisible] = useState(false);
@@ -97,4 +97,4 @@ const UserTable = () => {
   );
 };
 
-export default UserTable;
+export default UserActive;

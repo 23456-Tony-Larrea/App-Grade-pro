@@ -27,6 +27,7 @@ import TotalAttendance from "./views/attendance management/total-attendance/tota
 import ForgotDialog from "./views/home/ForgotDialog";
 import ForgotUsername from "./views/forgot-username-password/forgot-username-view";
 import ForgotPassword from "./views/forgot-username-password/forgot-password-view";
+import UserActive from "./views/config/user-activate/UserActivate";
 
 const App: React.FC = () => {
   return (
@@ -36,7 +37,7 @@ const App: React.FC = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/role-permission" element={<RolePermissions />} />
-        <Route path="/user-activate" element={<UsersActivate />} />
+        <Route path="/user-active" element={<UserActive />} />
         <Route path="/edit-user/:id" element={<EditUser />} />
         <Route path="/new-users" element={<NewUsers />} />
         <Route path="/user-inactivate" element={<UserInactivateTable />} />
