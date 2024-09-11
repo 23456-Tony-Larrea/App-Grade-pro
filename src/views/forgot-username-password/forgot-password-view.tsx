@@ -1,18 +1,36 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { Dialog } from 'primereact/dialog';
 import { useNavigate } from 'react-router-dom';
+import { ForgotPassParams, ForgotPasswordAction } from '../../actions/auth/forgot-pass';
+import { Message } from 'primereact/message';
+import { Toast } from 'primereact/toast';
+import axios from 'axios';
 
 const ForgotPassword: React.FC = () => {
   const [identity, setIdentity] = useState('');
   const [dialog, setDialog] = useState(true);
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const toast = useRef<Toast>(null);
 
-  const sendEmail = () => {
-    console.log('Email enviado:', identity);
-  };
+
+  const sendEmail = async() => {
+    const forgotPass: ForgotPassParams = { identity};
+    try{
+      await ForgotPasswordAction(forgotPass).then((e) => {
+        toast.current?.show({ severity: 'success', summary: 'Correo enviado', detail:e.message, life: 3000 });
+      });
+    }catch(error){
+      if (axios.isAxiosError(error) && error.response) {
+        setErrorMessage(error.response.data.message);
+      } else {
+        setErrorMessage("An unexpected error occurred.");
+      }
+    }
+  }
 
   const cancel = () => {
     setDialog(false);
@@ -39,6 +57,10 @@ const ForgotPassword: React.FC = () => {
                   <Button label="Cancelar" className="p-button-text p-button-danger" onClick={cancel} />
                 </form>
               </div>
+              {errorMessage && (
+            <Message severity="error" text={errorMessage} style={{ marginBottom: "20px" }} />
+          )}
+          <Toast ref={toast} />
             </Card>
           </div>
         </div>

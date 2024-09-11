@@ -119,7 +119,7 @@ export default function SidebarComponent() {
       icon: "pi pi-cog",
       items: [
         {
-          label: "Insertar Usuarios",
+          label: "Usuarios activos",
           icon: "pi pi-user",
           command: () => {
             /* Acción para Insertar Usuarios */

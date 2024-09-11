@@ -1,11 +1,11 @@
-import DashboardCalificaciones from '../components/Chart';
-import SidebarComponent from '../components/Sidebar';
+import DashboardCalificaciones from "../components/Chart";
+import SidebarComponent from "../components/Sidebar";
 
 function Dashboard() {
   return (
     <div>
       <SidebarComponent />
-      <DashboardCalificaciones/>
+      <DashboardCalificaciones />
     </div>
   );
 }

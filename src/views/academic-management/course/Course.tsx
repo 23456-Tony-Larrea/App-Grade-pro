@@ -1,22 +1,21 @@
-import { useState, useRef } from 'react';
-import { Toast } from 'primereact/toast';
-import { ConfirmDialog } from 'primereact/confirmdialog';
-import GenericTable from './../../components/ui/Table';
-import CustomTitle from '../../components/ui/Titles';
-import SidebarComponent from '../../components/Sidebar';
-import { Course } from '../../../models/Course';
-import ButtonModal from '../../components/ui/ButtonModal';
-import CustomModal from '../../components/ui/CustomModal';
-
+import { useState, useRef } from "react";
+import { Toast } from "primereact/toast";
+import { ConfirmDialog } from "primereact/confirmdialog";
+import GenericTable from "./../../components/ui/Table";
+import CustomTitle from "../../components/ui/Titles";
+import SidebarComponent from "../../components/Sidebar";
+import { Course } from "../../../models/Course";
+import ButtonModal from "../../components/ui/ButtonModal";
+import CustomModal from "../../components/ui/CustomModal";
 
 const courseData: Course[] = [
-  { id: 1, name: 'A', state: true },
-  { id: 2, name: 'B', state: false },
-  { id: 3, name: 'C', state: true },
+  { id: 1, name: "A", state: true },
+  { id: 2, name: "B", state: false },
+  { id: 3, name: "C", state: true },
 ];
 
-const columns: { field: keyof Course, header: string }[] = [
-  { field: 'name', header: 'Nombre' },
+const columns: { field: keyof Course; header: string }[] = [
+  { field: "name", header: "Nombre" },
 ];
 
 const CourseTable = () => {
@@ -25,11 +24,16 @@ const CourseTable = () => {
   const [courseIdToDelete, setCourseIdToDelete] = useState<number | null>(null);
   const toast = useRef<Toast>(null);
   const [modalVisible, setModalVisible] = useState(false);
-  const [modalTitle, setModalTitle] = useState('');
-  const [textValue, setTextValue] = useState('');
-  
+  const [modalTitle, setModalTitle] = useState("");
+  const [textValue, setTextValue] = useState("");
+
   const inputs = [
-    { type: 'text', label: 'Input Text', value: textValue, onChange: setTextValue } as const,
+    {
+      type: "text",
+      label: "Input Text",
+      value: textValue,
+      onChange: setTextValue,
+    } as const,
   ];
 
   const handleEdit = (course: Course) => {
@@ -44,14 +48,24 @@ const CourseTable = () => {
 
   const accept = () => {
     if (courseIdToDelete !== null) {
-      setcourse(course.filter(course => course.id !== courseIdToDelete));
-      toast.current?.show({ severity: 'info', summary: 'Confirmar', detail: 'Curso eliminado', life: 3000 });
+      setcourse(course.filter((course) => course.id !== courseIdToDelete));
+      toast.current?.show({
+        severity: "info",
+        summary: "Confirmar",
+        detail: "Curso eliminado",
+        life: 3000,
+      });
     }
     setVisible(false);
   };
 
   const reject = () => {
-    toast.current?.show({ severity: 'warn', summary: 'Cancelado', detail: 'Acción cancelada', life: 3000 });
+    toast.current?.show({
+      severity: "warn",
+      summary: "Cancelado",
+      detail: "Acción cancelada",
+      life: 3000,
+    });
     setVisible(false);
   };
   const openModal = () => {
@@ -65,7 +79,7 @@ const CourseTable = () => {
     <div>
       <SidebarComponent />
       <CustomTitle title="Gestion de Curso" />
-      <ButtonModal label="Agregar Curso"  onOpen={openModal} />
+      <ButtonModal label="Agregar Curso" onOpen={openModal} />
       <GenericTable<Course>
         data={course}
         columns={columns}
@@ -86,22 +100,22 @@ const CourseTable = () => {
         icon="pi pi-exclamation-triangle"
         accept={accept}
         reject={reject}
-        acceptLabel='Si'
-        rejectLabel='No'
-        style={{ width: '50vw' }}
-        breakpoints={{ '1100px': '75vw', '960px': '100vw' }}
+        acceptLabel="Si"
+        rejectLabel="No"
+        style={{ width: "50vw" }}
+        breakpoints={{ "1100px": "75vw", "960px": "100vw" }}
       />
-       <CustomModal 
-                visible={modalVisible} 
-                onHide={closeModal} 
-                title={modalTitle} 
-                setTitle={setModalTitle} 
-                header={"title 2"} 
-                showSaveButton={true} 
-                saveButtonLabel="Guardar" 
-                showCloseButton={true}
-                inputs={inputs} 
-            />
+      <CustomModal
+        visible={modalVisible}
+        onHide={closeModal}
+        title={modalTitle}
+        setTitle={setModalTitle}
+        header={"title 2"}
+        showSaveButton={true}
+        saveButtonLabel="Guardar"
+        showCloseButton={true}
+        inputs={inputs}
+      />
     </div>
   );
 };

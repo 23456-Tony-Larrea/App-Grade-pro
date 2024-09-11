@@ -20,11 +20,16 @@ export default function Component() {
   const handleLogin = async () => {
     const loginData: LoginUserParams = { identity, password };
     setLoading(true);
-    setErrorMessage(null); 
+    setErrorMessage(null);
     try {
       await login(loginData);
       setLoading(false);
-      toast.current?.show({ severity: 'success', summary: 'Bienvenido', detail: 'Inicio de sesión exitoso', life: 3000 });
+      toast.current?.show({
+        severity: "success",
+        summary: "Bienvenido",
+        detail: "Inicio de sesión exitoso",
+        life: 3000,
+      });
       navigate("/dashboard");
     } catch (error) {
       setLoading(false);
@@ -102,12 +107,22 @@ export default function Component() {
             </span>
           </div>
           <div style={{ marginBottom: "20px", textAlign: "right" }}>
-          <Link to="/modal-username-password" style={{ color: "var(--primary-color)", textDecoration: "underline" }}>
-  ¿Olvidaste tu contraseña y/o usuario ?
-</Link>
+            <Link
+              to="/modal-username-password"
+              style={{
+                color: "var(--primary-color)",
+                textDecoration: "underline",
+              }}
+            >
+              ¿Olvidaste tu contraseña y/o usuario ?
+            </Link>
           </div>
           {errorMessage && (
-            <Message severity="error" text={errorMessage} style={{ marginBottom: "20px" }} />
+            <Message
+              severity="error"
+              text={errorMessage}
+              style={{ marginBottom: "20px" }}
+            />
           )}
           <Toast ref={toast} />
           {loading ? (

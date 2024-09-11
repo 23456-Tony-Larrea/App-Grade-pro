@@ -5,9 +5,9 @@ import FooterMain from "./main-page/FooterMain";
 export default function HomeComponent() {
   return (
     <div className="flex flex-col min-h-[100dvh]">
-      <NavMain/>
-      <DescriptionMain/>
-      <FooterMain/>
+      <NavMain />
+      <DescriptionMain />
+      <FooterMain />
     </div>
   );
 }

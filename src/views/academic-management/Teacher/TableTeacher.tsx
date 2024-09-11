@@ -1,21 +1,26 @@
-import { useState, useRef } from 'react';
-import { Toast } from 'primereact/toast';
-import ButtonModal from '../../components/ui/ButtonAction';
-import GenericTable from '../../components/ui/Table';
-import CustomTitle from '../../components/ui/Titles';
-import SidebarComponent from '../../components/Sidebar';
-import { useNavigate } from 'react-router-dom';
-import { User } from '../../../models/User';
+import { useState, useRef } from "react";
+import { Toast } from "primereact/toast";
+import ButtonModal from "../../components/ui/ButtonAction";
+import GenericTable from "../../components/ui/Table";
+import CustomTitle from "../../components/ui/Titles";
+import SidebarComponent from "../../components/Sidebar";
+import { useNavigate } from "react-router-dom";
+import { User } from "../../../models/User";
 
 const usersData: User[] = [
-  { id: 1, name: 'John Doe', email: 'john.doe@example.com', active: true },
-  { id: 2, name: 'Jane Smith', email: 'jane.smith@example.com', active: false },
-  { id: 3, name: 'Alice Johnson', email: 'alice.johnson@example.com', active: true },
+  { id: 1, name: "John Doe", email: "john.doe@example.com", active: true },
+  { id: 2, name: "Jane Smith", email: "jane.smith@example.com", active: false },
+  {
+    id: 3,
+    name: "Alice Johnson",
+    email: "alice.johnson@example.com",
+    active: true,
+  },
 ];
 
-const columns: { field: keyof User, header: string }[] = [
-  { field: 'name', header: 'Name' },
-  { field: 'email', header: 'Email' },
+const columns: { field: keyof User; header: string }[] = [
+  { field: "name", header: "Name" },
+  { field: "email", header: "Email" },
 ];
 
 const TeacherTable = () => {
@@ -31,7 +36,7 @@ const TeacherTable = () => {
     <div>
       <SidebarComponent />
       <CustomTitle title="Gestion de Profesores" />
-      <ButtonModal label="Agregar Profesores" route='/new-teacher' />
+      <ButtonModal label="Agregar Profesores" route="/new-teacher" />
       <GenericTable<User>
         data={users}
         columns={columns}

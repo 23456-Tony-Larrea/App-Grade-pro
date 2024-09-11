@@ -1,18 +1,36 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { Dialog } from 'primereact/dialog';
 import { useNavigate } from 'react-router-dom';
+import { ForgotUsernameAction, ForgotUsernameParams } from '../../actions/auth/forgot-username';
+import axios from 'axios';
+import { Message } from 'primereact/message';
+import { Toast } from 'primereact/toast';
 
 const ForgotUsername: React.FC = () => {
   const [identity, setIdentity] = useState('');
   const [dialog, setDialog] = useState(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const toast = useRef<Toast>(null);
+
+
   const navigate = useNavigate();
 
-  const sendEmail = () => {
-    // Lógica para enviar el correo
-    console.log('Email enviado:', identity);
+  const sendEmail = async () => {
+    const forgotPass: ForgotUsernameParams = { identity};
+    try{
+      await ForgotUsernameAction(forgotPass).then((e) => {
+        toast.current?.show({ severity: 'success', summary: 'Correo enviado', detail:e.message, life: 3000 });
+      });
+    }catch(error){
+      if (axios.isAxiosError(error) && error.response) {
+        setErrorMessage(error.response.data.message);
+      } else {
+        setErrorMessage("An unexpected error occurred.");
+      }
+    }
   };
 
   const cancel = () => {
@@ -36,7 +54,11 @@ const ForgotUsername: React.FC = () => {
       <Button label="Cancelar" icon="pi pi-times" className="p-button-text" onClick={cancel} style={{ marginLeft: '1rem', color: '#F44336' }} />
     </div>
   </div>
+  {errorMessage && (
+            <Message severity="error" text={errorMessage} style={{ marginBottom: "20px" }} />
+          )}
 </Card>
+<Toast ref={toast} />
       </Dialog>
     </div>
   );

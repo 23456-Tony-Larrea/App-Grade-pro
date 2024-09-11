@@ -1,6 +1,6 @@
 import { PrimeIcons } from "primereact/api";
-import { Menubar } from 'primereact/menubar';
-import styles from '../../../public/assets/mainPage.module.css';
+import { Menubar } from "primereact/menubar";
+import styles from "../../../public/assets/mainPage.module.css";
 import { useNavigate } from "react-router-dom";
 
 export default function NavMain() {
@@ -8,12 +8,12 @@ export default function NavMain() {
   const navigate = useNavigate();
   const items = [
     {
-      label: 'Iniciar',
+      label: "Iniciar",
       icon: PrimeIcons.SIGN_IN,
-      command: () => { 
-        navigate('/login');
-       }
-    }
+      command: () => {
+        navigate("/login");
+      },
+    },
   ];
 
   return (

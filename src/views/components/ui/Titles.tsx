@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 
-import '../../../public/assets/Titles.css';
+import "../../../public/assets/Titles.css";
 
 interface CustomTitleProps {
   title: string;
