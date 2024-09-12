@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useFormik } from "formik";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
@@ -8,16 +8,45 @@ import { Card } from "primereact/card";
 import { validationSchema } from "../../../validations/ValidationsSchema";
 import { User } from "../../../models/User";
 import { UserInitialValues } from "../../../class/UserRegister";
+import { UsersAction } from "../../../actions/users/users-actions";
+import axios from "axios";
+import { Toast } from "primereact/toast";
 /* import { Dropdown } from "primereact/dropdown"; */
 
 export default function NewUsers() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const toast = useRef<Toast>(null);
+
 
   const formik = useFormik<User>({
     initialValues: new UserInitialValues(),
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      try {
+        await UsersAction(values).then((data) => {
+          toast.current?.show({
+            severity: "success",
+            summary: "Éxito",
+            detail: data.message,
+          });
+        });
+      } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+          const backendError = error.response.data;
+          console.log(backendError);
+          toast.current?.show({
+            severity: "error",
+            summary: `Error: ${backendError.error}`,
+            detail: backendError.message,
+          });
+        } else {
+          toast.current?.show({
+            severity: "error",
+            summary: "Error",
+            detail: "Error inesperado",
+          });
+        }
+      }
     },
   });
 
@@ -40,6 +69,7 @@ export default function NewUsers() {
 
   return (
     <div className="card">
+            <Toast ref={toast} />
       <Steps
         model={steps}
         activeIndex={activeIndex}
@@ -262,14 +292,10 @@ export default function NewUsers() {
                   options={roles}
                   onChange={(e) => formik.setFieldValue("roleId", e.value)}
                   optionLabel="name"
+                  optionValue="code"
                   placeholder="Selecciona un rol"
                 />
-                {formik.touched.roleId && formik.errors.roleId ? (
-                  <div style={{ color: "red" }}>
-                    {formik.errors.roleId as string}
-                  </div>
-                ) : null}
-              </div>
+               </div>
               {/* <div className="field">
                 <label htmlFor="cursos" className="font-bold">
                   Cursos

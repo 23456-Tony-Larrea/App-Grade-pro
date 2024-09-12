@@ -13,7 +13,7 @@ import {
   getRolePermissionById,
   updateRole,
   updateRoleAndPermissionById,
-} from "../../../actions/role-permissions/role-permissions";
+} from "../../../actions/role-permissions/role-permissions-actions";
 import { Toast } from "primereact/toast";
 
 const options = [

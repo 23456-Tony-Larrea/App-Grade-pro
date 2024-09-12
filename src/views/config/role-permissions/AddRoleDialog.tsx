@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
-import { RoleAction } from "../../../actions/role-permissions/role-permissions";
+import { RoleAction } from "../../../actions/role-permissions/role-permissions-actions";
 import { Toast } from "primereact/toast";
 import { Role } from "../../../models/Role";
 

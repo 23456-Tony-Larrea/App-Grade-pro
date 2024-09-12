@@ -3,7 +3,7 @@ import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { Message } from "primereact/message";
 import { WavesIcon } from "../../WavesIcon";
-import { login, LoginUserParams } from "../../actions/login";
+import { login, LoginUserParams } from "../../actions/login-actions";
 import { useState } from "react";
 import Loader from "../components/Loader";
 import axios from "axios";

@@ -15,8 +15,4 @@ export const validationSchema = yup.object({
     .string()
     .email("El correo electrónico no es válido")
     .required("El correo electrónico es requerido"),
-/*     roleId: yup
-    .number()
-    .typeError("El rol es requerido")
-    .required("El rol es requerido"), */
 });

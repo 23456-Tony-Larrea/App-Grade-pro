@@ -6,7 +6,6 @@ import {
 } from "react-router-dom";
 import Login from "./views/home/LoginForm";
 import Dashboard from "./views/home/Dashboard";
-import UsersActivate from "./views/config/user-activate/UserActivate";
 import "./App.css";
 import RolePermissions from "./views/config/role-permissions/rolePermissions";
 import NewUsers from "./views/config/user-activate/NewUser";

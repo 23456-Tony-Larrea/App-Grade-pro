@@ -4,7 +4,7 @@ import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { Dialog } from 'primereact/dialog';
 import { useNavigate } from 'react-router-dom';
-import { ForgotUsernameAction, ForgotUsernameParams } from '../../actions/auth/forgot-username';
+import { ForgotUsernameAction, ForgotUsernameParams } from '../../actions/auth/forgot-username-actions';
 import axios from 'axios';
 import { Message } from 'primereact/message';
 import { Toast } from 'primereact/toast';
