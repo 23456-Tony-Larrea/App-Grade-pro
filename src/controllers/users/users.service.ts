@@ -84,24 +84,27 @@ async findByIdWithRoles(userId: number) {
 async updateAll(userId: number, body: RegisterUserDTO) {
     const user = await this.prisma.user.findFirst({
         where: {
-            id:userId,
+            id: userId,
         },
-    })
-    if(!user){
+    });
+
+    if (!user) {
         return { message: 'User not found' };
     }
-    user.name=body.name;
-    user.email=body.email;
-    user.identity=body.identity;
-    user.dateOfBirth=body.dateOfBirth
-    user.phone=body.phone;
-    user.address=body.address;
-    user.age=body.age;
-    user.secondName=body.secondName;
-    user.firstLastName=body.firstLastName;
-    user.secondLastName=body.secondLastName;
-    user.gender=body.gender;
-    user.roleId=body.roleId;
+
+    const existingUserWithIdentity = await this.prisma.user.findFirst({
+        where: {
+            identity: body.identity,
+            NOT: {
+                id: userId,
+            },
+        },
+    });
+
+    if (existingUserWithIdentity) {
+        return { message: 'Identity already in use' };
+    }
+
     await this.prisma.user.update({
         where: {
             id: user.id,
@@ -110,8 +113,18 @@ async updateAll(userId: number, body: RegisterUserDTO) {
             name: body.name,
             email: body.email,
             roleId: body.roleId,
+            identity: body.identity,
+            dateOfBirth: body.dateOfBirth,
+            phone: body.phone,
+            address: body.address,
+            age: body.age,
+            secondName: body.secondName,
+            firstLastName: body.firstLastName,
+            secondLastName: body.secondLastName,
+            gender: body.gender,
         },
     });
+
     return { message: 'User updated successfully' };
 }
 }
