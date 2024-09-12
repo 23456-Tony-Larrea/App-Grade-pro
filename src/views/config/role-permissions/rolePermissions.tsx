@@ -111,13 +111,8 @@ export default function RolePermission() {
     }
   };
 
-  const handleAddRole = (roleName: string) => {
-    const newRole: Role = {
-      id: roles.length + 1,
-      name: roleName,
-      permission: [], // Inicialmente vacío, se puede llenar después
-    };
-    setRoles([...roles, newRole]);
+  const handleAddRole = () => {
+    fetchRoles();
   };
 
   const handleEditRoleName = (roleId: number) => {

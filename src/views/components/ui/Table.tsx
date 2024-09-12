@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "primereact/button";
 import { DataTable, DataTableValue } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -8,18 +8,20 @@ import { PaginatorTemplate } from "primereact/paginator";
 import { PrimeIcons } from "primereact/api";
 import { InputText } from "primereact/inputtext";
 import { Toast } from "primereact/toast";
-import { useRef } from "react";
+import { Dropdown } from "primereact/dropdown";
 
 interface TableProps<T extends DataTableValue> {
   data: T[];
   columns: { field: keyof T; header: string }[];
   onEdit?: (item: T) => void;
   onDelete?: (itemId: T[keyof T]) => void;
+  onToggleStatus?: (item: T) => void;
   idField: keyof T;
   activeField?: keyof T;
   rowsPerPage?: number;
   rowsPerPageOptions?: number[];
   paginatorTemplate?: PaginatorTemplate;
+  customActions?: { label: string; icon: string; command: (item: T) => void }[];
 }
 
 export default function GenericTable<T extends DataTableValue>({
@@ -27,11 +29,13 @@ export default function GenericTable<T extends DataTableValue>({
   columns,
   onEdit,
   onDelete,
+  onToggleStatus,
   idField,
   activeField,
   rowsPerPage = 10,
   rowsPerPageOptions = [5, 10, 20],
   paginatorTemplate,
+  customActions = [],
 }: TableProps<T>) {
   const [items, setItems] = useState(data);
   const [selectedItems, setSelectedItems] = useState<T[keyof T][]>([]);
@@ -39,6 +43,11 @@ export default function GenericTable<T extends DataTableValue>({
   const [rows, setRows] = useState(rowsPerPage);
   const [searchTerm, setSearchTerm] = useState("");
   const toast = useRef<Toast>(null);
+  const [selectedAction, setSelectedAction] = useState(null);
+
+  useEffect(() => {
+    setItems(data);
+  }, [data]);
 
   const toggleItemStatus = (itemId: T[keyof T]) => {
     setItems(
@@ -54,6 +63,9 @@ export default function GenericTable<T extends DataTableValue>({
       summary: "Estado cambiado",
       detail: `El estado de ${updatedItem?.name} ha sido cambiado.`,
     });
+    if (onToggleStatus) {
+      onToggleStatus(updatedItem!);
+    }
   };
 
   const toggleItemSelection = (itemId: T[keyof T]) => {
@@ -144,7 +156,7 @@ export default function GenericTable<T extends DataTableValue>({
             )}
           />
         )}
-        {(onEdit || onDelete) && (
+        {(onEdit || onDelete || customActions.length > 0) && (
           <Column
             header="Acciones"
             body={(rowData: T) => (
@@ -161,6 +173,22 @@ export default function GenericTable<T extends DataTableValue>({
                     icon={PrimeIcons.TRASH}
                     onClick={() => onDelete(rowData[idField])}
                     className="p-button-rounded p-button-danger p-button-text"
+                  />
+                )}
+                {customActions.length > 0 && (
+                  <Dropdown
+                    value={selectedAction}
+                    options={customActions.map((action) => ({
+                      label: action.label,
+                      icon: action.icon,
+                      command: () => action.command(rowData),
+                    }))}
+                    onChange={(e) => {
+                      setSelectedAction(e.value);
+                      e.value.command();
+                    }}
+                    placeholder="Acciones"
+                    className="p-button-rounded p-button-text"
                   />
                 )}
               </div>

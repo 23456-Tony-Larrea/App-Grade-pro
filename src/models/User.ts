@@ -14,6 +14,7 @@ export interface User {
   email?: string;
   password?: string;
   roleId?: number;
-  role?: Role;
+  role?: Role[];
   message?: string;
+  state?: boolean;
 }

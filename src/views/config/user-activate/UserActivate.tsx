@@ -1,66 +1,58 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Toast } from "primereact/toast";
-import { ConfirmDialog } from "primereact/confirmdialog";
 import ButtonModal from "../../components/ui/ButtonAction";
 import GenericTable from "./../../components/ui/Table";
 import CustomTitle from "../../components/ui/Titles";
 import SidebarComponent from "../../components/Sidebar";
 import { useNavigate } from "react-router-dom";
 import { User } from "../../../models/User";
-
-const usersData: User[] = [
-  { id: 1, name: "John Doe", email: "john.doe@example.com", active: true },
-  { id: 2, name: "Jane Smith", email: "jane.smith@example.com", active: false },
-  {
-    id: 3,
-    name: "Alice Johnson",
-    email: "alice.johnson@example.com",
-    active: true,
-  },
-];
+import { ChangeStateBoolAction, GetUsersAction } from "../../../actions/users/users-actions";
 
 const columns: { field: keyof User; header: string }[] = [
-  { field: "name", header: "Name" },
+  { field: "identity", header: "Cedula" },
+  { field: "name", header: "Primer Nombre" },
+  { field: "secondName", header: "Segundo nombre" },
+  { field: "firstLastName", header: "Apellido Paterno" },
+  { field: "secondLastName", header: "Apellido Materno" },
   { field: "email", header: "Email" },
+  { field: "phone", header: "telefono" },
+  { field: "gender", header: "Genero" },
 ];
 
 const UserActive = () => {
   const navigate = useNavigate();
-  const [users, setUsers] = useState(usersData);
-  const [visible, setVisible] = useState(false);
-  const [userIdToDelete, setUserIdToDelete] = useState<number | null>(null);
+  const [users, setUsers] = useState<User[]>([]);
   const toast = useRef<Toast>(null);
+  const fetchUsers = async () => {
+    try {
+      const usersData = await GetUsersAction();
+      setUsers(usersData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   const handleEdit = (user: User) => {
-    navigate(`/edit-user/${user.id}`);
+    navigate('/new-users', { state: { user } });
   };
 
-  const handleDelete = (userId: any) => {
-    setUserIdToDelete(userId);
-    setVisible(true);
-  };
-
-  const accept = () => {
-    if (userIdToDelete !== null) {
-      setUsers(users.filter((user) => user.id !== userIdToDelete));
+  const handleToggleStatus = async (user: User) => {
+    try {
+    await ChangeStateBoolAction(user.id!).then(() => {
+      fetchUsers();
+    })
+    } catch (error) {
+      console.log(error);
       toast.current?.show({
-        severity: "info",
-        summary: "Confirmar",
-        detail: "Usuario eliminado",
+        severity: "error",
+        summary: "Error",
+        detail: "No se pudo cambiar el estado del usuario",
         life: 3000,
       });
     }
-    setVisible(false);
-  };
-
-  const reject = () => {
-    toast.current?.show({
-      severity: "warn",
-      summary: "Cancelado",
-      detail: "Acción cancelada",
-      life: 3000,
-    });
-    setVisible(false);
   };
 
   return (
@@ -72,27 +64,15 @@ const UserActive = () => {
         data={users}
         columns={columns}
         onEdit={handleEdit}
-        onDelete={handleDelete}
+        onToggleStatus={handleToggleStatus}
         idField="id"
-        activeField="active"
+        activeField="state"
         rowsPerPage={10}
         rowsPerPageOptions={[5, 10, 20]}
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
       />
       <Toast ref={toast} />
-      <ConfirmDialog
-        visible={visible}
-        onHide={() => setVisible(false)}
-        message="Seguro que quieres eliminar este usuario?"
-        header="Confirmación"
-        icon="pi pi-exclamation-triangle"
-        accept={accept}
-        reject={reject}
-        acceptLabel="Si"
-        rejectLabel="No"
-        style={{ width: "50vw" }}
-        breakpoints={{ "1100px": "75vw", "960px": "100vw" }}
-      />
+      
     </div>
   );
 };

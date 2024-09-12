@@ -8,28 +8,42 @@ import { Card } from "primereact/card";
 import { validationSchema } from "../../../validations/ValidationsSchema";
 import { User } from "../../../models/User";
 import { UserInitialValues } from "../../../class/UserRegister";
-import { UsersAction } from "../../../actions/users/users-actions";
+import { UpdateUserAction, UsersAddAction } from "../../../actions/users/users-actions";
 import axios from "axios";
 import { Toast } from "primereact/toast";
-/* import { Dropdown } from "primereact/dropdown"; */
+import SidebarComponent from "../../components/Sidebar";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function NewUsers() {
   const [activeIndex, setActiveIndex] = useState(0);
   const toast = useRef<Toast>(null);
-
+  const navigate = useNavigate();
+  const location = useLocation();
+  const userToEdit = location.state?.user;
 
   const formik = useFormik<User>({
-    initialValues: new UserInitialValues(),
+    initialValues: userToEdit || new UserInitialValues(),
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       try {
-        await UsersAction(values).then((data) => {
-          toast.current?.show({
-            severity: "success",
-            summary: "Éxito",
-            detail: data.message,
+        if (userToEdit) {
+          await UpdateUserAction(values).then((data) => {
+            toast.current?.show({
+              severity: "success",
+              summary: "Éxito",
+              detail: data.message,
+            });
           });
-        });
+        } else {
+          await UsersAddAction(values).then((data) => {
+            toast.current?.show({
+              severity: "success",
+              summary: "Éxito",
+              detail: data.message,
+            });
+          });
+        }
+        navigate("/user-active");
       } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
           const backendError = error.response.data;
@@ -67,9 +81,24 @@ export default function NewUsers() {
     { name: "Otro", value: "O" },
   ];
 
+  const handleCancel = () => {
+    formik.resetForm();
+    navigate("/user-active");
+  };
+  const handleBack = () => {
+    navigate('/user-active');
+  };
   return (
     <div className="card">
-            <Toast ref={toast} />
+      <SidebarComponent />
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Button icon="pi pi-arrow-left" className="p-button-text" onClick={handleBack} />
+        <h1 style={{ textAlign: "center", flex: 1 }}>
+          <i className="pi pi-user-plus" style={{ marginRight: "0.5rem" }}></i>
+          {userToEdit ? "Editar Usuario" : "Insertar Usuarios"}
+        </h1>
+      </div>
+      <Toast ref={toast} />
       <Steps
         model={steps}
         activeIndex={activeIndex}
@@ -295,40 +324,20 @@ export default function NewUsers() {
                   optionValue="code"
                   placeholder="Selecciona un rol"
                 />
-               </div>
-              {/* <div className="field">
-                <label htmlFor="cursos" className="font-bold">
-                  Cursos
-                </label>
-                <Dropdown
-                  id="cursos"
-                  value={formik.values.cursos}
-                  options={cursos}
-                  onChange={(e) => formik.setFieldValue("cursos", e.value)}
-                  optionLabel="name"
-                  placeholder="Selecciona un curso"
-                />
-                {formik.touched.cursos && formik.errors.cursos ? (
-                  <div style={{ color: 'red' }}>{formik.errors.cursos as string}</div>
+                {formik.touched.roleId && formik.errors.roleId ? (
+                  <div style={{ color: "red" }}>
+                    {formik.errors.roleId as string}
+                  </div>
                 ) : null}
-              </div> */}
-              {/*  <div className="field">
-                <label htmlFor="tutor" className="font-bold">
-                  Tutor
-                </label>
-                <MultiSelect
-                  id="tutor"
-                  value={formik.values.tutor}
-                  options={tutores}
-                  onChange={(e) => formik.setFieldValue("tutor", e.value)}
-                  placeholder="Selecciona tutores"
-                />
-                {formik.touched.tutor && formik.errors.tutor ? (
-                  <div style={{ color: 'red' }}>{formik.errors.tutor as string}</div>
-                ) : null}
-              </div> */}
-              <div className="flex justify-content-between">
+              </div>
+              <div className="flex justify-content-end" style={{ gap: "1rem" }}>
                 <Button label="Enviar" icon="pi pi-check" type="submit" />
+                <Button
+                  label="Cancelar"
+                  icon="pi pi-times"
+                  className="p-button-danger"
+                  onClick={handleCancel}
+                />
               </div>
             </div>
           )}

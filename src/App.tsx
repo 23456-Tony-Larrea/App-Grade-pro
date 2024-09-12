@@ -8,8 +8,7 @@ import Login from "./views/home/LoginForm";
 import Dashboard from "./views/home/Dashboard";
 import "./App.css";
 import RolePermissions from "./views/config/role-permissions/rolePermissions";
-import NewUsers from "./views/config/user-activate/NewUser";
-import EditUser from "./views/config/user-activate/EditUser";
+import NewUsers from "./views/config/user-activate/NewEditUser";
 import UserInactivateTable from "./views/config/user-inactivate/UserInactivate";
 import CourseTable from "./views/academic-management/course/Course";
 import Home from "./views/components/Home";
@@ -27,6 +26,8 @@ import ForgotDialog from "./views/home/ForgotDialog";
 import ForgotUsername from "./views/forgot-username-password/forgot-username-view";
 import ForgotPassword from "./views/forgot-username-password/forgot-password-view";
 import UserActive from "./views/config/user-activate/UserActivate";
+import ProfileView from "./views/nav/Profile";
+import ChangePasswordView from "./views/change-password/change-passwordView";
 
 const App: React.FC = () => {
   return (
@@ -37,7 +38,6 @@ const App: React.FC = () => {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/role-permission" element={<RolePermissions />} />
         <Route path="/user-active" element={<UserActive />} />
-        <Route path="/edit-user/:id" element={<EditUser />} />
         <Route path="/new-users" element={<NewUsers />} />
         <Route path="/user-inactivate" element={<UserInactivateTable />} />
         <Route path="/course" element={<CourseTable />} />
@@ -56,7 +56,8 @@ const App: React.FC = () => {
         <Route path="/modal-username-password" element={<ForgotDialog />} />
         <Route path="/forgot-username" element={<ForgotUsername />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-
+        <Route path="/profile" element={<ProfileView />} />
+        <Route path="/reset-password/:id" element={<ChangePasswordView />} />
         </Routes>
     </Router>
   );
