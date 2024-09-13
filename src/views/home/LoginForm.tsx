@@ -10,6 +10,7 @@ import axios from "axios";
 import { Toast } from "primereact/toast";
 import { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuthStore } from "../../store/useAuthStore";
 export default function Component() {
   const [identity, setIdentity] = useState("");
   const [password, setPassword] = useState("");
@@ -17,20 +18,25 @@ export default function Component() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const toast = useRef<Toast>(null);
   const navigate = useNavigate();
+  const setAuthUser = useAuthStore((state) => state.setAuthUser);
+
   const handleLogin = async () => {
     const loginData: LoginUserParams = { identity, password };
     setLoading(true);
     setErrorMessage(null);
     try {
-      await login(loginData);
-      setLoading(false);
-      toast.current?.show({
-        severity: "success",
-        summary: "Bienvenido",
-        detail: "Inicio de sesión exitoso",
-        life: 3000,
-      });
-      navigate("/dashboard");
+      await login(loginData).then((data) => {
+        setLoading(false);
+        setAuthUser(data);
+        toast.current?.show({
+          severity: "success",
+          summary: "Bienvenido",
+          detail: "Inicio de sesión exitoso",
+          life: 3000,
+        });
+        navigate("/dashboard");
+      
+    })
     } catch (error) {
       setLoading(false);
       if (axios.isAxiosError(error) && error.response) {
@@ -51,6 +57,7 @@ export default function Component() {
         backgroundColor: "#FFFFFF",
       }}
     >
+      <Toast ref={toast} />
       <Card
         style={{
           backgroundColor: "var(--primary-color)",
@@ -124,7 +131,6 @@ export default function Component() {
               style={{ marginBottom: "20px" }}
             />
           )}
-          <Toast ref={toast} />
           {loading ? (
             <div
               style={{

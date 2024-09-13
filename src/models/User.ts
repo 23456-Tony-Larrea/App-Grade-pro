@@ -17,4 +17,5 @@ export interface User {
   role?: Role[];
   message?: string;
   state?: boolean;
+  token?: string
 }
