@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../../prisma/prisma.service';
-import { CreatePermissionDTO } from 'src/DTO/permissions/permissionsdto';
+import { Injectable } from "@nestjs/common";
+import { PrismaService } from "../../../prisma/prisma.service";
+import { CreatePermissionDTO } from "src/DTO/permissions/permissionsdto";
 
 @Injectable()
 export class PermissionsService {
@@ -16,6 +16,6 @@ export class PermissionsService {
 
   async create(data: CreatePermissionDTO) {
     await this.prismaService.permission.create({ data });
-    return { message: 'Permission created successfully'};
+    return { message: "Permission created successfully" };
   }
 }

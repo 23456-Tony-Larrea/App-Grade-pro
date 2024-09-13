@@ -1,6 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from "@nestjs/swagger";
 
 export class CreatePermissionDTO {
-  @ApiProperty({ example: 'Read' })
+  @ApiProperty({ example: "Read" })
   name: string;
 }

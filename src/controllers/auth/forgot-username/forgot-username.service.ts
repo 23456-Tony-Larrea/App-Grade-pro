@@ -1,27 +1,29 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
-import { PrismaService } from 'prisma/prisma.service';
-import { transporter } from 'src/config-smtp/config-smtp';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from "@nestjs/common";
+import { PrismaService } from "prisma/prisma.service";
+import { transporter } from "src/config-smtp/config-smtp";
 
 @Injectable()
 export class ForgotUsernameService {
-    constructor(
-        private readonly prisma: PrismaService,
-      ) {}
-      async forgotUsername(identity: string): Promise<{ message: string }> {
-        try{
-            const user = await this.prisma.user.findUnique({
-                where: { identity },
-              });
-        
-              if (!user) {
-                throw new NotFoundException('Usuario no encontrado');
-              }
-        
-              const info = await transporter.sendMail({
-                from: process.env.EMAIL_USER,
-                to: user.email,
-                subject: 'Recuperar nombre de usuario',
-                html: `
+  constructor(private readonly prisma: PrismaService) {}
+  async forgotUsername(identity: string): Promise<{ message: string }> {
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: { identity },
+      });
+
+      if (!user) {
+        throw new NotFoundException("Usuario no encontrado");
+      }
+
+      const info = await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: user.email,
+        subject: "Recuperar nombre de usuario",
+        html: `
                 <html>
                     <head>
                         <style>
@@ -51,12 +53,12 @@ export class ForgotUsernameService {
                         </div>
                     </body>
                 </html>
-           `
-              });        
-              console.log('Message sent: %s', info.messageId);
-              return { message: 'Se envió un mensaje a tu correo electrónico' };              
-            } catch (error) {
-              throw new InternalServerErrorException(error.message);
-            }
+           `,
+      });
+      console.log("Message sent: %s", info.messageId);
+      return { message: "Se envió un mensaje a tu correo electrónico" };
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
     }
+  }
 }

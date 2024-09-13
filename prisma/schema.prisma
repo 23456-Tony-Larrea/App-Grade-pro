@@ -8,47 +8,90 @@ datasource db {
 }
 
 model Permission {
-  id    Int     @id @default(autoincrement())
+  id    Int              @id @default(autoincrement())
   name  String
   roles PermissionRole[]
 }
 
 model PermissionRole {
-  id           Int     @id @default(autoincrement())
+  id           Int        @id @default(autoincrement())
   roleId       Int
   permissionId Int
-  state Boolean
-  role         Role     @relation(fields: [roleId], references: [id])
+  state        Boolean
+  role         Role       @relation(fields: [roleId], references: [id])
   permission   Permission @relation(fields: [permissionId], references: [id])
 
   @@unique([roleId, permissionId])
 }
 
 model Role {
-  id          Int     @id @default(autoincrement())
+  id          Int              @id @default(autoincrement())
   name        String
   permissions PermissionRole[]
   users       User[]
 }
 
 model User {
-  id            Int     @id @default(autoincrement())
-  name          String
-  secondName    String
-  firstLastName String
-  secondLastName String
-  identity      String  @unique
-  dateOfBirth   DateTime
-  gender        String
-  phone         String  @unique
-  address       String
-  age           Int
-  email         String  @unique
-  password      String
-  token         String?
-  token_type    String?
-  role Role? @relation(fields: [roleId], references: [id])
-  roleId Int?
-  state         Boolean @default(true)
-  failed_login_attempts Int @default(0)
+  id                    Int          @id @default(autoincrement())
+  name                  String
+  secondName            String
+  firstLastName         String
+  secondLastName        String
+  identity              String       @unique
+  dateOfBirth           DateTime
+  gender                String
+  phone                 String       @unique
+  address               String
+  age                   Int
+  email                 String       @unique
+  password              String
+  token                 String?
+  token_type            String?
+  role                  Role?        @relation(fields: [roleId], references: [id])
+  roleId                Int?
+  state                 Boolean      @default(true)
+  failed_login_attempts Int          @default(0)
+  courses               UserCourse[]
+  subjects              UserSubject[]
+}
+
+model Course {
+  id    Int          @id @default(autoincrement())
+  name  String?
+  state Boolean?     @default(true)
+  users UserCourse[]
+  subjects CourseSubject[]
+}
+
+model UserCourse {
+  userId   Int
+  courseId Int
+  user     User   @relation(fields: [userId], references: [id])
+  course   Course @relation(fields: [courseId], references: [id])
+
+  @@id([userId, courseId])
+}
+
+model Subject {
+  id     Int          @id @default(autoincrement())
+  name   String
+  state  Boolean      @default(true)
+  users  UserSubject[]
+  courses CourseSubject[]
+}
+
+model CourseSubject {
+  courseId  Int
+  subjectId Int
+  course    Course   @relation(fields: [courseId], references: [id])
+  subject   Subject  @relation(fields: [subjectId], references: [id])
+  @@id([courseId, subjectId])
+}
+
+model UserSubject {
+  userId    Int
+  subjectId Int
+  user      User     @relation(fields: [userId], references: [id])
+  subject   Subject  @relation(fields: [subjectId], references: [id])
+  @@id([userId, subjectId])
 }

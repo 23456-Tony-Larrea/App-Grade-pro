@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class DesactivateUserFalseService {
-    emailDesactivate(userName: string, userEmail: string): string {
-        return `
+  emailDesactivate(userName: string, userEmail: string): string {
+    return `
          <html>
                     <head>
                         <style>
@@ -20,5 +20,5 @@ export class DesactivateUserFalseService {
                     </body>
                 </html>
         `;
-      }
+  }
 }

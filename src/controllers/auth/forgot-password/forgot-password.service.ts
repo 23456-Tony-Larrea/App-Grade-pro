@@ -1,12 +1,14 @@
-import { Injectable, NotFoundException, InternalServerErrorException } from '@nestjs/common';
-import { transporter } from '../../../config-smtp/config-smtp';
-import { PrismaService } from 'prisma/prisma.service';
+import {
+  Injectable,
+  NotFoundException,
+  InternalServerErrorException,
+} from "@nestjs/common";
+import { transporter } from "../../../config-smtp/config-smtp";
+import { PrismaService } from "prisma/prisma.service";
 
 @Injectable()
 export class ForgotPasswordService {
-  constructor(
-    private readonly prisma: PrismaService,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async forgotPassword(identity: string): Promise<{ message: string }> {
     try {
@@ -15,13 +17,13 @@ export class ForgotPasswordService {
       });
 
       if (!user) {
-        throw new NotFoundException('Usuario no encontrado');
+        throw new NotFoundException("Usuario no encontrado");
       }
 
       const info = await transporter.sendMail({
         from: process.env.EMAIL_USER,
         to: user.email,
-        subject: 'Restablecer contraseña',
+        subject: "Restablecer contraseña",
         html: `
           <html>
             <head>
@@ -44,8 +46,8 @@ export class ForgotPasswordService {
           </html>
         `,
       });
-      console.log('Message sent: %s', info.messageId);
-      return { message: 'Se envió un mensaje a tu correo electrónico' };
+      console.log("Message sent: %s", info.messageId);
+      return { message: "Se envió un mensaje a tu correo electrónico" };
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }

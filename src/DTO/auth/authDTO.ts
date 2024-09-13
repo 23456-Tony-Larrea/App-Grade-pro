@@ -1,5 +1,11 @@
-import { IsOptional, IsString, IsNumber, IsDate, IsEmail } from 'class-validator';
-import { RoleDto } from '../role-dto/role-dto';
+import {
+  IsOptional,
+  IsString,
+  IsNumber,
+  IsDate,
+  IsEmail,
+} from "class-validator";
+import { RoleDto } from "../role-dto/role-dto";
 
 export class RegisterUserDTO {
   @IsOptional()
@@ -58,5 +64,5 @@ export class RegisterUserDTO {
   @IsNumber()
   roleId?: number;
   @IsOptional()
-  role : RoleDto
+  role: RoleDto;
 }
