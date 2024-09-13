@@ -35,8 +35,7 @@ export default function Component() {
           life: 3000,
         });
         navigate("/dashboard");
-      
-    })
+      });
     } catch (error) {
       setLoading(false);
       if (axios.isAxiosError(error) && error.response) {

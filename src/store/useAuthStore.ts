@@ -1,13 +1,13 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface AuthUser {
   id?: number;
   name?: string;
   token?: string;
-  email?: string,
-  secondLastName?:string,
-  identity?: string,
+  email?: string;
+  secondLastName?: string;
+  identity?: string;
 }
 
 interface AuthStore {
@@ -21,10 +21,10 @@ export const useAuthStore = create<AuthStore>()(
     (set) => ({
       authUser: null,
       setAuthUser: (authUser) => set({ authUser }),
-      clearAuthUser: () => set({ authUser: null }),
+      clearAuthUser: () =>{ localStorage.clear(); set({  authUser: null })},
     }),
     {
-      name: 'auth-login',
+      name: "auth-login",
     }
   )
 );

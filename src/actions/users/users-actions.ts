@@ -16,16 +16,12 @@ export const GetUsersFalseAction = async (): Promise<User[]> => {
   const response = await axios.get(`${API_URL}/users/false`);
   return response.data;
 };
-export const ChangeStateBoolAction = async (
-  id: number,
-): Promise<User> => {
+export const ChangeStateBoolAction = async (id: number): Promise<User> => {
   const response = await axios.put(`${API_URL}/users/state/${id}`);
   return response.data;
 };
 
-export const UpdateUserAction = async (
-  data: User,
-): Promise<User> => {
+export const UpdateUserAction = async (data: User): Promise<User> => {
   const response = await axios.put(`${API_URL}/users/${data.id}`, data);
   return response.data;
-}
+};
