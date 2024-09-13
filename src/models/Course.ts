@@ -1,5 +1,6 @@
 export interface Course {
-  id: number;
+  id?: number;
   name: string;
-  state: true | false;
+  state?: true | false;
+  message?:string;
 }
