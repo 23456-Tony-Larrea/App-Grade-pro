@@ -8,5 +8,7 @@ export class UpdatePasswordDTO {
     actuallyPassword: string;
   
     @IsString()
-    newPassword: string;    
+    newPassword: string;
+    @IsString()
+    confirmPassword: string;
 }

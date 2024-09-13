@@ -8,18 +8,19 @@ export class UpdatePasswordController {
 
   @Put(':id')
   async updatePasswordConfirm(
-    @Param('id') id: number,
+    @Param('id') id: string, 
     @Body() updatePasswordDto: UpdatePasswordDTO,
   ): Promise<{ message: string }> {
-    updatePasswordDto.id = id; // Asignar el id del parámetro al DTO
+    const numericId = parseInt(id, 10); 
+    updatePasswordDto.id =  numericId;
     return this.updatePasswordService.updatePasswordConfirm(updatePasswordDto);
   }
   @Put('forgot/:id')
   async forgotPasswordUpdate(
-    @Param('id') id: string, // Recibe el id como string
+    @Param('id') id: string, 
     @Body() forgotPasswordDto: ChangePasswordDTO,
   ): Promise<{ message: string }> {
-    const numericId = parseInt(id, 10); // Convierte el id a número
+    const numericId = parseInt(id, 10); 
     if (isNaN(numericId)) {
       throw new BadRequestException({ message: 'Invalid user ID', statusCode: 400 });
     }

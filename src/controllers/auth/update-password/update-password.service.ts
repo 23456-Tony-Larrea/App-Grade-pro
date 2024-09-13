@@ -9,7 +9,7 @@ export class UpdatePasswordService {
   constructor(private readonly prisma: PrismaService) {}
 
   async updatePasswordConfirm(updatePasswordDto: UpdatePasswordDTO): Promise<{ message: string }> {
-    const { id, actuallyPassword, newPassword } = updatePasswordDto;
+    const { id, actuallyPassword, newPassword, confirmPassword } = updatePasswordDto;
     try {
       const user = await this.prisma.user.findUnique({ where: { id } });
       if (!user) {
@@ -20,6 +20,11 @@ export class UpdatePasswordService {
       const isPasswordCorrect = await bcrypt.compare(actuallyPassword, user.password);
       if (!isPasswordCorrect) {
         throw new BadRequestException('La contraseña actual es incorrecta');
+      }
+
+      // Verificar que las nuevas contraseñas coincidan
+      if (newPassword !== confirmPassword) {
+        throw new BadRequestException('Las contraseñas no coinciden');
       }
 
       // Encriptar la nueva contraseña
@@ -34,6 +39,9 @@ export class UpdatePasswordService {
       return { message: 'Contraseña actualizada correctamente' };
     } catch (error) {
       console.error(error);
+      if (error instanceof BadRequestException || error instanceof NotFoundException) {
+        throw error;
+      }
       throw new InternalServerErrorException('Ocurrió un error al actualizar la contraseña');
     }
   }

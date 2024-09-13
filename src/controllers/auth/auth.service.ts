@@ -172,7 +172,9 @@ export class LoginRegisterService {
     return {
       id: user.id,
       name: user.name,
-      role: role.name,
+      email: user.email,
+      secondLastName:user.secondLastName,
+      identity: user.identity,
       token,
     };
   }
