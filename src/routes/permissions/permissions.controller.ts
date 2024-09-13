@@ -1,6 +1,10 @@
+// permissions.controller.ts
 import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
 import { PermissionsService } from '../../controllers/permission/permission.service';
+import { CreatePermissionDTO } from 'src/DTO/permissions/permissionsdto';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('permissions')
 @Controller('permissions')
 export class PermissionsController {
   constructor(private readonly permissionsService: PermissionsService) {}
@@ -16,7 +20,8 @@ export class PermissionsController {
   }
 
   @Post()
-  create(@Body() createPermissionDto: any) {
+  @ApiBody({ type: CreatePermissionDTO })
+  create(@Body() createPermissionDto: CreatePermissionDTO) {
     return this.permissionsService.create(createPermissionDto);
   }
 }
