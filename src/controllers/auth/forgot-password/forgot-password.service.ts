@@ -36,7 +36,7 @@ export class ForgotPasswordService {
                 <div class="box">
                   <h3>Restablecer contraseña</h3>
                   <p>Por favor, haz clic en el siguiente enlace para restablecer tu contraseña:</p>
-                  <a href="${process.env.RESET_PASSWORD_URL}?id=${user.id}">Restablecer contraseña</a>
+                  <a href="${process.env.RESET_PASSWORD_URL}/${user.id}">Restablecer contraseña</a>
                   <p>Después de hacer clic en el enlace, ingresarás a restablecer tu contraseña.</p>
                 </div>
               </div>

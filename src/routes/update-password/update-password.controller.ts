@@ -1,4 +1,4 @@
-import { Controller, Put, Param, Body } from '@nestjs/common';import { UpdatePasswordService } from 'src/controllers/auth/update-password/update-password.service';
+import { Controller, Put, Param, Body, BadRequestException } from '@nestjs/common';import { UpdatePasswordService } from 'src/controllers/auth/update-password/update-password.service';
 import { ChangePasswordDTO } from 'src/DTO/update-password/change-passwordDTO';
 import { UpdatePasswordDTO } from 'src/DTO/update-password/update-passwordDTO';
 
@@ -16,10 +16,14 @@ export class UpdatePasswordController {
   }
   @Put('forgot/:id')
   async forgotPasswordUpdate(
-    @Param('id') id: number,
+    @Param('id') id: string, // Recibe el id como string
     @Body() forgotPasswordDto: ChangePasswordDTO,
   ): Promise<{ message: string }> {
-    forgotPasswordDto.id = id;
+    const numericId = parseInt(id, 10); // Convierte el id a número
+    if (isNaN(numericId)) {
+      throw new BadRequestException({ message: 'Invalid user ID', statusCode: 400 });
+    }
+    forgotPasswordDto.id = numericId;
     return this.updatePasswordService.changePasswordUpdate(forgotPasswordDto);
   }
 }

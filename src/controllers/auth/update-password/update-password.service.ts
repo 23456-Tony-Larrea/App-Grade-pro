@@ -41,14 +41,14 @@ export class UpdatePasswordService {
   async changePasswordUpdate(changePasswordDto: ChangePasswordDTO): Promise<{ message: string }> {
     const { id, newPassword, confirmPassword } = changePasswordDto;
     try {
-      const user = await this.prisma.user.findUnique({ where: { id  } });
+      const user = await this.prisma.user.findUnique({ where: { id } });
       if (!user) {
-        throw new NotFoundException('Usuario no encontrado');
+        throw new NotFoundException({ message: 'Usuario no encontrado', statusCode: 404 });
       }
 
       // Verificar que las nuevas contraseñas coincidan
       if (newPassword !== confirmPassword) {
-        throw new BadRequestException('Las contraseñas no coinciden');
+        throw new BadRequestException({ message: 'Las contraseñas no coinciden', statusCode: 400 });
       }
 
       // Encriptar la nueva contraseña
@@ -63,7 +63,10 @@ export class UpdatePasswordService {
       return { message: 'Contraseña actualizada correctamente' };
     } catch (error) {
       console.error(error);
-      throw new InternalServerErrorException('Ocurrió un error al actualizar la contraseña');
+      if (error instanceof BadRequestException || error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new InternalServerErrorException({ message: 'Ocurrió un error al actualizar la contraseña', statusCode: 500 });
     }
   }
 }
