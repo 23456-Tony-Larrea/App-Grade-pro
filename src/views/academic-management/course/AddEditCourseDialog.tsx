@@ -4,7 +4,10 @@ import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
 import { Course } from "../../../models/Course";
-import { CoursesAddAction, UpdateCourseAction } from "../../../actions/course/Course-actions";
+import {
+  CoursesAddAction,
+  UpdateCourseAction,
+} from "../../../actions/course/Course-actions";
 
 interface AddCourseDialogProps {
   visible: boolean;

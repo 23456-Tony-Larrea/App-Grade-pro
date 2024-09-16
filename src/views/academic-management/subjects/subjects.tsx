@@ -6,7 +6,7 @@ import SidebarComponent from "../../components/Sidebar";
 import { Subject } from "../../../models/Subject";
 import {
   ChangeStateBoolSubjectAction,
-  GetSubjectsAction
+  GetSubjectsAction,
 } from "../../../actions/subject/subject-actions";
 import { Button } from "primereact/button";
 import AddSubjectDialog from "./AddSubjectDialog";

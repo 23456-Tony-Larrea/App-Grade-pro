@@ -4,7 +4,10 @@ import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
 import { Subject } from "../../../models/Subject";
-import { SubjectsAddAction, UpdateSubjectAction } from "../../../actions/subject/subject-actions";
+import {
+  SubjectsAddAction,
+  UpdateSubjectAction,
+} from "../../../actions/subject/subject-actions";
 
 interface AddsubjectDialogProps {
   visible: boolean;
@@ -61,7 +64,10 @@ export default function AddsubjectDialog({
   const handleUpdateSubject = async () => {
     if (!subjectToEdit) return;
 
-    const updatedsubjectData: Subject = { ...subjectToEdit, name: newsubjectName };
+    const updatedsubjectData: Subject = {
+      ...subjectToEdit,
+      name: newsubjectName,
+    };
 
     setLoading(true);
     try {
@@ -85,7 +91,7 @@ export default function AddsubjectDialog({
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   return (
     <>
