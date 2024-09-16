@@ -1,92 +1,82 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Toast } from "primereact/toast";
-import { ConfirmDialog } from "primereact/confirmdialog";
 import GenericTable from "./../../components/ui/Table";
 import CustomTitle from "../../components/ui/Titles";
 import SidebarComponent from "../../components/Sidebar";
 import { Subject } from "../../../models/Subject";
-import ButtonModal from "../../components/ui/ButtonModal";
-import CustomModal from "../../components/ui/CustomModal";
-
-const SubjectData: Subject[] = [
-  { id: 1, name: "Quimica", state: true },
-  { id: 2, name: "fisica", state: false },
-  { id: 3, name: "Cultura fisica", state: true },
-];
+import {
+  ChangeStateBoolSubjectAction,
+  GetSubjectsAction
+} from "../../../actions/subject/subject-actions";
+import { Button } from "primereact/button";
+import AddSubjectDialog from "./AddSubjectDialog";
 
 const columns: { field: keyof Subject; header: string }[] = [
   { field: "name", header: "Nombre" },
 ];
 
 const SubjectTable = () => {
-  const [Subject, setSubject] = useState(SubjectData);
-  const [visible, setVisible] = useState(false);
-  const [SubjectIdToDelete, setSubjectIdToDelete] = useState<number | null>(
-    null
-  );
+  const [subject, setsubject] = useState<Subject[]>([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [subjectToEdit, setsubjectToEdit] = useState<Subject | null>(null);
   const toast = useRef<Toast>(null);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalTitle, setModalTitle] = useState("");
-  const [textValue, setTextValue] = useState("");
 
-  const inputs = [
-    {
-      type: "text",
-      label: "Input Text",
-      value: textValue,
-      onChange: setTextValue,
-    } as const,
-  ];
-
-  const handleEdit = (Subject: Subject) => {
-    setModalVisible(true);
-    setTextValue(Subject.name);
+  const fetchsubject = async () => {
+    try {
+      const subjectData = await GetSubjectsAction();
+      setsubject(subjectData);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const handleDelete = (SubjectId: any) => {
-    setSubjectIdToDelete(SubjectId);
-    setVisible(true);
+  useEffect(() => {
+    fetchsubject();
+  }, []);
+
+  const handleEdit = (subject: Subject) => {
+    setsubjectToEdit(subject);
+    setIsModalVisible(true);
   };
 
-  const accept = () => {
-    if (SubjectIdToDelete !== null) {
-      setSubject(Subject.filter((Subject) => Subject.id !== SubjectIdToDelete));
+  const handleToggleStatus = async (subject: Subject) => {
+    try {
+      await ChangeStateBoolSubjectAction(subject.id!).then(() => {
+        fetchsubject();
+      });
+    } catch (error) {
+      console.log(error);
       toast.current?.show({
-        severity: "info",
-        summary: "Confirmar",
-        detail: "Curso eliminado",
+        severity: "error",
+        summary: "Error",
+        detail: "No se pudo cambiar el estado del curso",
         life: 3000,
       });
     }
-    setVisible(false);
   };
 
-  const reject = () => {
-    toast.current?.show({
-      severity: "warn",
-      summary: "Cancelado",
-      detail: "Acción cancelada",
-      life: 3000,
-    });
-    setVisible(false);
-  };
-  const openModal = () => {
-    setModalVisible(true);
+  const handleAddsubject = () => {
+    fetchsubject();
   };
 
-  const closeModal = () => {
-    setModalVisible(false);
-  };
   return (
     <div>
       <SidebarComponent />
       <CustomTitle title="Gestion de Materias" />
-      <ButtonModal label="Agregar Materia" onOpen={openModal} />
+      <Button
+        label="Agregar Materia"
+        icon="pi pi-plus"
+        className="p-button-success p-button-rounded mb-4"
+        onClick={() => {
+          setsubjectToEdit(null);
+          setIsModalVisible(true);
+        }}
+      />
       <GenericTable<Subject>
-        data={Subject}
+        data={subject}
         columns={columns}
         onEdit={handleEdit}
-        onDelete={handleDelete}
+        onToggleStatus={handleToggleStatus}
         idField="id"
         activeField="state"
         rowsPerPage={10}
@@ -94,29 +84,11 @@ const SubjectTable = () => {
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
       />
       <Toast ref={toast} />
-      <ConfirmDialog
-        visible={visible}
-        onHide={() => setVisible(false)}
-        message="Seguro que quieres eliminar este curso?"
-        header="Confirmación"
-        icon="pi pi-exclamation-triangle"
-        accept={accept}
-        reject={reject}
-        acceptLabel="Si"
-        rejectLabel="No"
-        style={{ width: "50vw" }}
-        breakpoints={{ "1100px": "75vw", "960px": "100vw" }}
-      />
-      <CustomModal
-        visible={modalVisible}
-        onHide={closeModal}
-        title={modalTitle}
-        setTitle={setModalTitle}
-        header={"title 2"}
-        showSaveButton={true}
-        saveButtonLabel="Guardar"
-        showCloseButton={true}
-        inputs={inputs}
+      <AddSubjectDialog
+        visible={isModalVisible}
+        onHide={() => setIsModalVisible(false)}
+        onAddsubject={handleAddsubject}
+        subjectToEdit={subjectToEdit}
       />
     </div>
   );

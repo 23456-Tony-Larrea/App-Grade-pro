@@ -90,14 +90,14 @@ export default function SidebarComponent() {
           label: "Insertar Materias",
           icon: "pi pi-book",
           command: () => {
-            /* Acción para Insertar Curso */
+            navigate("/subject")
           },
         },
         {
           label: "Insertar Curso",
           icon: "pi pi-book",
           command: () => {
-            /* Acción para Insertar Curso */
+            navigate("/course")
           },
         },
         {
