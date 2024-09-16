@@ -1,5 +1,5 @@
 export class SubjectsDto {
   id?: number;
-  name?: string;
+  name: string;
   state?: boolean;
 }

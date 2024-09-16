@@ -16,6 +16,15 @@ export class UsersController {
       res.status(500).json({ message: error.message });
     }
   }
+  @Get("teachers")
+  async findTeachers(@Res() res: Response): Promise<void> {
+    try {
+      const users: RegisterUserDTO[] = await this.usersService.findTeachers();
+      res.status(200).json(users);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
   @Get("false")
   async findWithJoinFalse(@Res() res: Response): Promise<void> {
     try {

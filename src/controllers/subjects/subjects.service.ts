@@ -1,55 +1,71 @@
-import { Injectable } from "@nestjs/common";
-import { PrismaService } from "prisma/prisma.service";
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'prisma/prisma.service';
+import { SubjectsDto } from 'src/DTO/Subjects/subjectsDTO';
 
+
+export type CreateSubjectParams = Omit<SubjectsDto, 'id'>;
 @Injectable()
 export class SubjectsService {
-  /* constructor(private readonly prisma: PrismaService) {} */
-  /*   async findAllSubjects() {
+  constructor(private readonly prisma: PrismaService) {}
+
+  async findAllsubject() {
     return this.prisma.subject.findMany();
   }
-  async createSubjects(data: CreateSubjectsParams) {
-    return this.prisma.Subjects.create({
+
+  async createsubject(data: CreateSubjectParams): Promise<{ message: string; subject: any }> {
+    const subject = await this.prisma.subject.create({
       data,
     });
+    return {
+      message: 'Materia creada con éxito',
+      subject,
+    };
   }
-  async findOneSubjects(id: number) {
-    return this.prisma.Subjects.findUnique({ where: { id } });
+
+  async findOnesubject(id: number) {
+    return this.prisma.subject.findUnique({ where: { id } });
   }
-  async updateSubjects(id: number, data: CreateSubjectsParams) {
-    return this.prisma.Subjects.update({
+
+  async updatesubject(id: number, data: CreateSubjectParams): Promise<{ message: string; subject: any }> {
+    const subject = await this.prisma.subject.update({
       where: { id },
       data,
     });
+    return {
+      message: 'Materia actualizada con éxito',
+      subject,
+    };
   }
-  async changeStateBoolSubjects(id: number) {
-    const Subjects = await this.prisma.Subjects.findFirst({
+
+  async changeStateBoolsubject(id: number) {
+    const subject = await this.prisma.subject.findFirst({
       where: {
         id,
       },
     });
-    if (!Subjects) {
-      return { message: "Subjects not found" };
+    if (!subject) {
+      return { message: "materia no encontrada" };
     }
-    if (Subjects.state) {
-      await this.prisma.Subjects.update({
+    if (subject.state) {
+      await this.prisma.subject.update({
         where: {
-          id: Subjects.id,
+          id: subject.id,
         },
         data: {
           state: false,
         },
       });
-      return { message: "Subjects disabled successfully" };
+      return { message: "materia deshabilitada con éxito" };
     } else {
-      await this.prisma.Subjects.update({
+      await this.prisma.subject.update({
         where: {
-          id: Subjects.id,
+          id: subject.id,
         },
         data: {
           state: true,
         },
       });
-      return { message: "Subjects enabled successfully" };
+      return { message: "materia habilitada con éxito" };
     }
-  } */
+  }
 }

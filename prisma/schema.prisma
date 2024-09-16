@@ -53,6 +53,7 @@ model User {
   failed_login_attempts Int          @default(0)
   courses               UserCourse[]
   subjects              UserSubject[]
+  is_tutor              Boolean @default(false)
 }
 
 model Course {

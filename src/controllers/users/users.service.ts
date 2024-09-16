@@ -21,6 +21,24 @@ export class UsersService {
       return userWithoutPassword;
     });
   }
+  async findTeachers(): Promise<RegisterUserDTO[]> {
+    const users = await this.prisma.user.findMany({
+      include: {
+        role: true,
+      },
+      where: {
+        state: true,
+        role: {
+          name: 'profesor',
+        },
+      },
+    });
+
+    return users.map((user) => {
+      const { password, ...userWithoutPassword } = user;
+      return userWithoutPassword;
+    });
+  }
   async findWithJoinFalse() {
     const users = await this.prisma.user.findMany({
       include: {
@@ -125,5 +143,6 @@ export class UsersService {
     });
 
     return { message: "User updated successfully" };
-  }
+  }    
+
 }
