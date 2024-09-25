@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 import { Sidebar } from "primereact/sidebar";
 import { PanelMenu } from "primereact/panelmenu";
 import Navbar from "./Navbar";
+import { useNavigate } from "react-router-dom";
 
 export default function SidebarComponent() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     document.body.className = isDarkMode ? "dark-mode" : "light-mode";
@@ -88,14 +90,14 @@ export default function SidebarComponent() {
           label: "Insertar Materias",
           icon: "pi pi-book",
           command: () => {
-            /* Acción para Insertar Curso */
+            navigate("/subject")
           },
         },
         {
           label: "Insertar Curso",
           icon: "pi pi-book",
           command: () => {
-            /* Acción para Insertar Curso */
+            navigate("/course")
           },
         },
         {
@@ -119,24 +121,24 @@ export default function SidebarComponent() {
       icon: "pi pi-cog",
       items: [
         {
-          label: "Insertar Usuarios",
+          label: "Usuarios activos",
           icon: "pi pi-user",
           command: () => {
-            /* Acción para Insertar Usuarios */
+            navigate("/user-active")
           },
         },
         {
           label: "Usuarios Inactivos",
           icon: "pi pi-user-minus",
           command: () => {
-            /* Acción para Usuarios Inactivos */
+            navigate("/user-inactivate")
           },
         },
         {
           label: "Roles y Permisos",
           icon: "pi pi-lock",
           command: () => {
-            /* Acción para Roles y Permisos */
+            navigate('/role-permission')
           },
         },
       ],
