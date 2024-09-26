@@ -1,26 +1,48 @@
 import { Card } from "primereact/card";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
+import { Message } from "primereact/message";
 import { WavesIcon } from "../../WavesIcon";
-import { login, LoginUserParams } from "../../actions/login";
+import { login, LoginUserParams } from "../../actions/login-actions";
 import { useState } from "react";
 import Loader from "../components/Loader";
-
+import axios from "axios";
+import { Toast } from "primereact/toast";
+import { useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuthStore } from "../../store/useAuthStore";
 export default function Component() {
-  const [username, setUsername] = useState("");
+  const [identity, setIdentity] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const toast = useRef<Toast>(null);
+  const navigate = useNavigate();
+  const setAuthUser = useAuthStore((state) => state.setAuthUser);
 
   const handleLogin = async () => {
-    const loginData: LoginUserParams = { username, password };
+    const loginData: LoginUserParams = { identity, password };
     setLoading(true);
+    setErrorMessage(null);
     try {
-      const user = await login(loginData);
-      console.log("Login successful", user);
-      setLoading(false);
+      await login(loginData).then((data) => {
+        setLoading(false);
+        setAuthUser(data);
+        toast.current?.show({
+          severity: "success",
+          summary: "Bienvenido",
+          detail: "Inicio de sesión exitoso",
+          life: 3000,
+        });
+        navigate("/dashboard");
+      });
     } catch (error) {
-      console.error("Login failed", error);
-      setLoading(true);
+      setLoading(false);
+      if (axios.isAxiosError(error) && error.response) {
+        setErrorMessage(error.response.data.message);
+      } else {
+        setErrorMessage("An unexpected error occurred.");
+      }
     }
   };
 
@@ -34,6 +56,7 @@ export default function Component() {
         backgroundColor: "#FFFFFF",
       }}
     >
+      <Toast ref={toast} />
       <Card
         style={{
           backgroundColor: "var(--primary-color)",
@@ -71,11 +94,11 @@ export default function Component() {
           <div className="p-field" style={{ marginBottom: "20px" }}>
             <span className="p-float-label">
               <InputText
-                id="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                id="identity"
+                value={identity}
+                onChange={(e) => setIdentity(e.target.value)}
               />
-              <label htmlFor="username">Usuario</label>
+              <label htmlFor="identity">Cédula</label>
             </span>
           </div>
           <div className="p-field" style={{ marginBottom: "20px" }}>
@@ -89,6 +112,24 @@ export default function Component() {
               <label htmlFor="password">Contraseña</label>
             </span>
           </div>
+          <div style={{ marginBottom: "20px", textAlign: "right" }}>
+            <Link
+              to="/modal-username-password"
+              style={{
+                color: "var(--primary-color)",
+                textDecoration: "underline",
+              }}
+            >
+              ¿Olvidaste tu contraseña y/o usuario ?
+            </Link>
+          </div>
+          {errorMessage && (
+            <Message
+              severity="error"
+              text={errorMessage}
+              style={{ marginBottom: "20px" }}
+            />
+          )}
           {loading ? (
             <div
               style={{

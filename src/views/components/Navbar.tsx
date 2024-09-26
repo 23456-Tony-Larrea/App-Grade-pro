@@ -1,6 +1,8 @@
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Menubar } from "primereact/menubar";
+import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "../../store/useAuthStore";
 
 interface NavbarProps {
   onMenuButtonClick?: () => void;
@@ -13,6 +15,15 @@ export default function Navbar({
   onToggleDarkMode,
   isDarkMode,
 }: NavbarProps) {
+  const navigate = useNavigate();
+  const clearAuthUser = useAuthStore((state) => state.clearAuthUser);
+
+
+  const handleLogout = () => {
+    navigate("/login"); 
+    clearAuthUser();
+  };
+
   return (
     <Menubar
       start={
@@ -43,11 +54,17 @@ export default function Navbar({
           <Button
             icon="pi pi-user"
             className="p-button-rounded p-button-text"
+            onClick={() => navigate("/profile")}
           />
           <Button
             icon={isDarkMode ? "pi pi-sun" : "pi pi-moon"}
             className="p-button-rounded p-button-text"
             onClick={onToggleDarkMode}
+          />
+          <Button
+            icon="pi pi-sign-out"
+            className="p-button-rounded p-button-text"
+            onClick={handleLogout}
           />
         </div>
       }

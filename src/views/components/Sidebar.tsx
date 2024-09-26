@@ -104,14 +104,14 @@ export default function SidebarComponent() {
           label: "Insertar Profesor",
           icon: "pi pi-user",
           command: () => {
-            /* Acción para Insertar Profesor */
+           navigate("/teacher")
           },
         },
         {
           label: "Insertar Estudiante",
           icon: "pi pi-users",
           command: () => {
-            /* Acción para Insertar Estudiante */
+           navigate("/students")
           },
         },
       ],
