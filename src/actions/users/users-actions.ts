@@ -12,6 +12,16 @@ export const GetUsersAction = async (): Promise<User[]> => {
   const response = await axios.get(`${API_URL}/users`);
   return response.data;
 };
+
+export const GetTeacherAction = async (): Promise<User[]> => {
+  const response = await axios.get(`${API_URL}/users/teachers`);
+  return response.data;
+};
+
+export const GetStudentAction = async (): Promise<User[]> => {
+  const response = await axios.get(`${API_URL}/users/students`);
+  return response.data;
+};
 export const GetUsersFalseAction = async (): Promise<User[]> => {
   const response = await axios.get(`${API_URL}/users/false`);
   return response.data;

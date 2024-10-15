@@ -6,14 +6,26 @@ import CustomTitle from "../../components/ui/Titles";
 import SidebarComponent from "../../components/Sidebar";
 import { useNavigate } from "react-router-dom";
 import { User } from "../../../models/User";
-import { ChangeStateBoolAction, GetUsersAction } from "../../../actions/users/users-actions";
+import {
+  ChangeStateBoolAction,
+  GetUsersAction,
+} from "../../../actions/users/users-actions";
 
-const columns: { field: keyof User; header: string }[] = [
+const columns: {
+  field: keyof User | string;
+  header: string;
+  customBody?: (rowData: User) => JSX.Element;
+}[] = [
   { field: "identity", header: "Cedula" },
   { field: "name", header: "Primer Nombre" },
   { field: "secondName", header: "Segundo nombre" },
   { field: "firstLastName", header: "Apellido Paterno" },
   { field: "secondLastName", header: "Apellido Materno" },
+  {
+    field: "roleName",
+    header: "Rol",
+    customBody: (rowData) => <span>{rowData.role?.name || ""}</span>,
+  },
   { field: "email", header: "Email" },
   { field: "phone", header: "telefono" },
   { field: "gender", header: "Genero" },
@@ -36,14 +48,14 @@ const UserActive = () => {
   }, []);
 
   const handleEdit = (user: User) => {
-    navigate('/new-users', { state: { user } });
+    navigate("/new-users", { state: { user } });
   };
 
   const handleToggleStatus = async (user: User) => {
     try {
-    await ChangeStateBoolAction(user.id!).then(() => {
-      fetchUsers();
-    })
+      await ChangeStateBoolAction(user.id!).then(() => {
+        fetchUsers();
+      });
     } catch (error) {
       console.log(error);
       toast.current?.show({
@@ -72,7 +84,6 @@ const UserActive = () => {
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
       />
       <Toast ref={toast} />
-      
     </div>
   );
 };

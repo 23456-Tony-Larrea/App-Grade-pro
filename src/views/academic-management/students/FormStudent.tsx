@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useFormik } from "formik";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
@@ -17,6 +17,8 @@ import { Toast } from "primereact/toast";
 import { useNavigate, useLocation } from "react-router-dom";
 import SidebarComponent from "../../components/Sidebar";
 import { Divider } from "primereact/divider";
+import { GetCoursesAction } from "../../../actions/course/Course-actions";
+import { Course } from "../../../models/Course";
 
 export default function NewStudents() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -24,6 +26,7 @@ export default function NewStudents() {
   const navigate = useNavigate();
   const location = useLocation();
   const userToEdit = location.state?.user;
+  const [courses, setCourses] = useState<Course[]>([]);
 
   const formik = useFormik<User>({
     initialValues: userToEdit || new UserInitialValues(),
@@ -77,14 +80,19 @@ export default function NewStudents() {
     { name: "Femenino", value: "F" },
     { name: "Otro", value: "O" },
   ];
-  const courses = [
-    { name: "Mathematics", code: "MATH" },
-    { name: "Physics", code: "PHYS" },
-    { name: "Chemistry", code: "CHEM" },
-    { name: "Biology", code: "BIOL" },
-  ];
 
+  const fetchCourses = async () => {
+    try {
+      const getCourses = await GetCoursesAction();
+      setCourses(getCourses);
+    } catch (error) {
+      console.error("Error fetching roles:", error);
+    }
+  };
 
+  useEffect(() => {
+    fetchCourses();
+  }, []);
 
   const handleCancel = () => {
     formik.resetForm();
@@ -337,17 +345,16 @@ export default function NewStudents() {
                   </label>
                   <Dropdown
                     id="courses"
-                    value={formik.values.courses}
+                    value={formik.values.courseId}
                     options={courses}
-                    onChange={(e) => formik.setFieldValue("courses", e.value)}
+                    onChange={(e) => formik.setFieldValue("courseId", e.value)}
                     optionLabel="name"
                     optionValue="code"
                     placeholder="Selecciona los cursos"
-                    multiple
                   />
-                  {formik.touched.courses && formik.errors.courses ? (
+                  {formik.touched.courseId && formik.errors.courseId ? (
                     <div style={{ color: "red" }}>
-                      {formik.errors.courses as string}
+                      {formik.errors.courseId as string}
                     </div>
                   ) : null}
                 </div>

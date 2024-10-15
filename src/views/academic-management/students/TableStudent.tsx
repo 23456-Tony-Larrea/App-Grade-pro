@@ -6,9 +6,16 @@ import CustomTitle from "../../components/ui/Titles";
 import SidebarComponent from "../../components/Sidebar";
 import { useNavigate } from "react-router-dom";
 import { User } from "../../../models/User";
-import { ChangeStateBoolAction, GetUsersAction } from "../../../actions/users/users-actions";
+import {
+  ChangeStateBoolAction,
+  GetStudentAction,
+} from "../../../actions/users/users-actions";
 
-const columns: { field: keyof User; header: string }[] = [
+const columns: {
+  field: keyof User | string;
+  header: string;
+  customBody?: (rowData: User) => JSX.Element;
+}[] = [
   { field: "identity", header: "Cedula" },
   { field: "name", header: "Primer Nombre" },
   { field: "secondName", header: "Segundo nombre" },
@@ -16,6 +23,11 @@ const columns: { field: keyof User; header: string }[] = [
   { field: "secondLastName", header: "Apellido Materno" },
   { field: "email", header: "Email" },
   { field: "phone", header: "telefono" },
+  {
+    field: "roleName",
+    header: "Rol",
+    customBody: (rowData) => <span>{rowData.role?.name || ""}</span>,
+  },
   { field: "gender", header: "Genero" },
 ];
 
@@ -25,7 +37,7 @@ const StudentsTable = () => {
   const toast = useRef<Toast>(null);
   const fetchUsers = async () => {
     try {
-      const usersData = await GetUsersAction();
+      const usersData = await GetStudentAction();
       setUsers(usersData);
     } catch (error) {
       console.log(error);
@@ -36,14 +48,14 @@ const StudentsTable = () => {
   }, []);
 
   const handleEdit = (user: User) => {
-    navigate('/new-students', { state: { user } });
+    navigate("/new-students", { state: { user } });
   };
 
   const handleToggleStatus = async (user: User) => {
     try {
-    await ChangeStateBoolAction(user.id!).then(() => {
-      fetchUsers();
-    })
+      await ChangeStateBoolAction(user.id!).then(() => {
+        fetchUsers();
+      });
     } catch (error) {
       console.log(error);
       toast.current?.show({
@@ -72,7 +84,6 @@ const StudentsTable = () => {
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
       />
       <Toast ref={toast} />
-      
     </div>
   );
 };

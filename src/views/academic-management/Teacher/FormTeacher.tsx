@@ -1,12 +1,12 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useFormik } from "formik";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
 import { Steps } from "primereact/steps";
 import { Card } from "primereact/card";
-import { validationSchema } from "../../../validations/ValidationsSchema";
-import { User } from "../../../models/User";
+/* import { validationSchema } from "../../../validations/ValidationsSchema";
+ */ import { User } from "../../../models/User";
 import { UserInitialValues } from "../../../class/UserRegister";
 import {
   UpdateUserAction,
@@ -18,6 +18,9 @@ import { useNavigate, useLocation } from "react-router-dom";
 import SidebarComponent from "../../components/Sidebar";
 import { InputSwitch } from "primereact/inputswitch";
 import { Divider } from "primereact/divider";
+import { MultiSelect } from "primereact/multiselect";
+import { GetCoursesAction } from "../../../actions/course/Course-actions";
+import { Course } from "../../../models/Course";
 
 export default function NewUsers() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -25,15 +28,23 @@ export default function NewUsers() {
   const navigate = useNavigate();
   const location = useLocation();
   const userToEdit = location.state?.user;
-  const [isTutor, setIsTutor] = useState(false);
+  const [is_tutor, setIsTutor] = useState(false);
+  const [courses, setCourses] = useState<Course[]>([]);
 
   const formik = useFormik<User>({
     initialValues: userToEdit || new UserInitialValues(),
-    validationSchema: validationSchema,
+    /*    validationSchema: validationSchema, */
     onSubmit: async (values) => {
+      const dataToSend = {
+        ...values,
+        courseTeacher: JSON.parse(JSON.stringify(values.courseTeacher)),
+        tutorCourses: JSON.parse(JSON.stringify(values.tutorCourses)),
+        is_tutor,
+        roleId: 2,
+      };
       try {
         if (userToEdit) {
-          await UpdateUserAction(values).then((data) => {
+          await UpdateUserAction(dataToSend).then((data) => {
             toast.current?.show({
               severity: "success",
               summary: "Éxito",
@@ -41,7 +52,7 @@ export default function NewUsers() {
             });
           });
         } else {
-          await UsersAddAction(values).then((data) => {
+          await UsersAddAction(dataToSend).then((data) => {
             toast.current?.show({
               severity: "success",
               summary: "Éxito",
@@ -79,19 +90,18 @@ export default function NewUsers() {
     { name: "Femenino", value: "F" },
     { name: "Otro", value: "O" },
   ];
-  const courses = [
-    { name: "Mathematics", code: "MATH" },
-    { name: "Physics", code: "PHYS" },
-    { name: "Chemistry", code: "CHEM" },
-    { name: "Biology", code: "BIOL" },
-  ];
+  const fetchCourses = async () => {
+    try {
+      const getCourses = await GetCoursesAction();
+      setCourses(getCourses);
+    } catch (error) {
+      console.error("Error fetching roles:", error);
+    }
+  };
 
-  const tutorCourses = [
-    { name: "English", code: "ENG" },
-    { name: "History", code: "HIST" },
-    { name: "Geography", code: "GEOG" },
-    { name: "Computer Science", code: "CS" },
-  ];
+  useEffect(() => {
+    fetchCourses();
+  }, []);
 
   const handleCancel = () => {
     formik.resetForm();
@@ -339,22 +349,24 @@ export default function NewUsers() {
             {activeIndex === 2 && (
               <div className="p-fluid">
                 <div className="field">
-                  <label htmlFor="courses" className="font-bold">
+                  <label htmlFor="courseTeacher" className="font-bold">
                     Cursos que imparte
                   </label>
-                  <Dropdown
-                    id="courses"
-                    value={formik.values.courses}
+                  <MultiSelect
+                    id="courseTeacher"
+                    value={formik.values.courseTeacher}
                     options={courses}
-                    onChange={(e) => formik.setFieldValue("courses", e.value)}
+                    onChange={(e) =>
+                      formik.setFieldValue("courseTeacher", e.value)
+                    }
                     optionLabel="name"
                     optionValue="code"
                     placeholder="Selecciona los cursos"
-                    multiple
                   />
-                  {formik.touched.courses && formik.errors.courses ? (
+                  {formik.touched.courseTeacher &&
+                  formik.errors.courseTeacher ? (
                     <div style={{ color: "red" }}>
-                      {formik.errors.courses as string}
+                      {formik.errors.courseTeacher as string}
                     </div>
                   ) : null}
                 </div>
@@ -365,30 +377,29 @@ export default function NewUsers() {
                   </label>
                   <InputSwitch
                     id="isTutor"
-                    checked={isTutor}
+                    checked={is_tutor}
                     onChange={(e) => setIsTutor(e.value)}
                     style={{ marginLeft: "1rem" }}
                   />
                   <Divider />
                 </div>
-                {isTutor && (
+                {is_tutor && (
                   <>
                     <Divider />
                     <div className="field">
                       <label htmlFor="tutorCourses" className="font-bold">
                         Cursos que es tutor
                       </label>
-                      <Dropdown
+                      <MultiSelect
                         id="tutorCourses"
                         value={formik.values.tutorCourses}
-                        options={tutorCourses}
+                        options={courses}
                         onChange={(e) =>
                           formik.setFieldValue("tutorCourses", e.value)
                         }
                         optionLabel="name"
                         optionValue="code"
-                        placeholder="Selecciona los cursos"
-                        multiple
+                        placeholder="Selecciona los cursos de tutor"
                       />
                       {formik.touched.tutorCourses &&
                       formik.errors.tutorCourses ? (

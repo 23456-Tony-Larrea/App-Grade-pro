@@ -14,10 +14,13 @@ export interface User {
   email?: string;
   password?: string;
   roleId?: number;
-  role?: Role[];
+  role?: Role;
   message?: string;
   state?: boolean;
   token?: string;
-  courses?: string[];
-  tutorCourses?:string[];
+  courseId?: number;
+  courseTeacher?: string;
+  tutorCourses?: string;
+  roleName?: string;
+  courses?: string;
 }

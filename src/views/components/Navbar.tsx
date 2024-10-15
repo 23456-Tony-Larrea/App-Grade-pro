@@ -18,9 +18,8 @@ export default function Navbar({
   const navigate = useNavigate();
   const clearAuthUser = useAuthStore((state) => state.clearAuthUser);
 
-
   const handleLogout = () => {
-    navigate("/login"); 
+    navigate("/login");
     clearAuthUser();
   };
 

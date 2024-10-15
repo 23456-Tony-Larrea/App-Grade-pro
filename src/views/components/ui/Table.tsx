@@ -12,7 +12,11 @@ import { Dropdown } from "primereact/dropdown";
 
 interface TableProps<T extends DataTableValue> {
   data: T[];
-  columns: { field: keyof T; header: string }[];
+  columns: {
+    field: keyof T | string;
+    header: string;
+    customBody?: (rowData: T) => JSX.Element;
+  }[];
   onEdit?: (item: T) => void;
   onDelete?: (itemId: T[keyof T]) => void;
   onToggleStatus?: (item: T) => void;
@@ -89,9 +93,13 @@ export default function GenericTable<T extends DataTableValue>({
     setRows(event.rows);
   };
 
+  const getRoleName = (item: T) => (item["role"] as any)?.name || "";
+
   const filteredItems = items.filter((item) =>
     columns.some((col) =>
-      String(item[col.field]).toLowerCase().includes(searchTerm.toLowerCase())
+      String(item[col.field as keyof T] || getRoleName(item))
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
     )
   );
 
@@ -143,6 +151,13 @@ export default function GenericTable<T extends DataTableValue>({
             key={String(col.field)}
             field={String(col.field)}
             header={col.header}
+            body={(rowData: T) =>
+              col.customBody
+                ? col.customBody(rowData)
+                : col.field === "roleName"
+                ? getRoleName(rowData)
+                : rowData[col.field as keyof T]
+            }
           />
         ))}
         {activeField && (
