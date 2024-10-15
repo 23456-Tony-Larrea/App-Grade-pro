@@ -65,4 +65,10 @@ export class RegisterUserDTO {
   roleId?: number;
   @IsOptional()
   role: RoleDto;
+  @IsOptional()
+  @IsString()
+  tutorCourses: string
+  @IsOptional()
+  @IsString()
+  courseTeacher : string;
 }

@@ -79,6 +79,8 @@ export class LoginRegisterService {
         email: data.email,
         password: hashedPassword,
         roleId: data.roleId,
+        tutorCourses: JSON.stringify(data.tutorCourses),
+        courseTeacher: JSON.stringify(data.courseTeacher),
       },
     });
 
@@ -101,7 +103,6 @@ export class LoginRegisterService {
       },
     });
 
-    if (data.roleId !== 3) {
       const htmlContent = this.welcomeUser.accountCreateHTML(
         newUser.name,
         randomPassword
@@ -111,7 +112,6 @@ export class LoginRegisterService {
         "Bienvenido a GradePro",
         htmlContent
       );
-    }
 
     return {
       token,
