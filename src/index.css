@@ -1,0 +1,6 @@
+/* PrimeReact */
+@import 'primereact/resources/themes/lara-light-cyan/theme.css';
+@import 'primeicons/primeicons.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
