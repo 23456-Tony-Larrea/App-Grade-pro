@@ -5,11 +5,13 @@ import LoginView from "./views/home/Login";
 import RegisterView from "./views/home/Register";
 import ChatView from "./views/chat/Chat";
 import NotFoundPage from "./views/components/NotFoundView";
-import ProtectedRoute from "./helpers/ProtectedRoute"; // Importa el helper
+import ProtectedRoute from "./helpers/ProtectedRoute"; 
 import UnauthorizedPage from "./views/components/UnauthorizedPage";
+import RolePermissionView from "./views/home/roleAndPermission";
+import UserUsage from "./views/users/UserUsage";
 
 const App: React.FC = () => {
-  const isAuthenticated = false; // Cambia esto según tu lógica de autenticación
+  const isAuthenticated = false; 
 
   return (
     <Router>
@@ -31,6 +33,19 @@ const App: React.FC = () => {
               <ChatView />
             </ProtectedRoute>
           }
+        />
+         <Route
+          path="/role-permission"
+          element={
+              <RolePermissionView />
+          }
+        />
+          <Route
+          path="/sidebar"
+          element={
+              <UserUsage />
+          }
+          
         />
         {/* Página de error 401 */}
         <Route path="/401" element={<UnauthorizedPage />} />
